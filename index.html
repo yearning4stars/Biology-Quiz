@@ -14,6 +14,38 @@ body{
   font-family:Arial;
   text-align:center;
   padding:20px;
+  overflow:hidden;
+}
+
+/* ⭐ ดาว */
+.star{
+  position:absolute;
+  width:2px;
+  height:2px;
+  background:white;
+  border-radius:50%;
+  opacity:0.7;
+  animation:floatStar 8s linear infinite;
+}
+
+@keyframes floatStar{
+  from{ transform:translateY(100vh); }
+  to{ transform:translateY(-10vh); }
+}
+
+/* 🧪 อนุภาคเคมี */
+.particle{
+  position:absolute;
+  width:6px;
+  height:6px;
+  background:rgba(0,200,255,0.4);
+  border-radius:50%;
+  animation:move 12s linear infinite;
+}
+
+@keyframes move{
+  0%{ transform:translate(0,100vh); }
+  100%{ transform:translate(100vw,-10vh); }
 }
 
 .box{
@@ -65,6 +97,18 @@ button{
 </head>
 
 <body>
+
+<!-- ⭐ ดาว -->
+<div class="star" style="left:10%; animation-duration:7s;"></div>
+<div class="star" style="left:25%; animation-duration:9s;"></div>
+<div class="star" style="left:40%; animation-duration:6s;"></div>
+<div class="star" style="left:60%; animation-duration:10s;"></div>
+<div class="star" style="left:80%; animation-duration:8s;"></div>
+
+<!-- 🧪 อนุภาค -->
+<div class="particle" style="left:20%;"></div>
+<div class="particle" style="left:50%; animation-duration:15s;"></div>
+<div class="particle" style="left:70%; animation-duration:11s;"></div>
 
 <div class="box">
 
@@ -177,7 +221,7 @@ function check(idx){
   if(locked) return;
   locked=true;
 
-  clearInterval(timer); // ⛔ หยุดเวลาเมื่อกดตอบ
+  clearInterval(timer);
 
   let q=quiz[i];
   let correctText=q.answers[q.correct];
