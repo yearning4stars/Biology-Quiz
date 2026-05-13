@@ -3,158 +3,151 @@
 
 <head>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Biology Quiz</title>
+<title>Biology Quiz</title>
 
-  <style>
+<style>
 
-    body{
+body{
+  background: radial-gradient(circle at top,
+    #0b1b2b,
+    #07111c,
+    #050b12
+  );
 
-      background: radial-gradient(circle at top,
-        #0b1b2b,
-        #07111c,
-        #050b12
-      );
+  min-height:100vh;
+  overflow:hidden;
 
-      min-height:100vh;
-      overflow:hidden;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+  padding:20px;
+}
 
-      color:white;
-      font-family:Arial;
-      text-align:center;
-      padding:20px;
-    }
+.star{
+  position:absolute;
+  width:2px;
+  height:2px;
+  background:white;
+  border-radius:50%;
+  opacity:0.7;
+  animation:floatStar 8s linear infinite;
+}
 
-    .star{
-      position:absolute;
-      width:2px;
-      height:2px;
-      background:white;
-      border-radius:50%;
-      opacity:0.7;
-      animation:floatStar 8s linear infinite;
-    }
+@keyframes floatStar{
+  from{ transform:translateY(100vh); }
+  to{ transform:translateY(-10vh); }
+}
 
-    @keyframes floatStar{
-      from{ transform:translateY(100vh); }
-      to{ transform:translateY(-10vh); }
-    }
+.particle{
+  position:absolute;
+  width:6px;
+  height:6px;
+  background:rgba(0,200,255,0.4);
+  border-radius:50%;
+  animation:move 12s linear infinite;
+}
 
-    .particle{
-      position:absolute;
-      width:6px;
-      height:6px;
-      background:rgba(0,200,255,0.4);
-      border-radius:50%;
-      animation:move 12s linear infinite;
-    }
+@keyframes move{
+  0%{ transform:translate(0,100vh); }
+  100%{ transform:translate(100vw,-10vh); }
+}
 
-    @keyframes move{
-      0%{ transform:translate(0,100vh); }
-      100%{ transform:translate(100vw,-10vh); }
-    }
+.box{
+  background:rgba(27,42,65,0.85);
+  backdrop-filter:blur(6px);
 
-    .box{
+  width:90%;
+  max-width:500px;
 
-      background:rgba(27,42,65,0.85);
-      backdrop-filter:blur(6px);
+  margin:auto;
+  padding:20px;
 
-      width:90%;
-      max-width:500px;
+  border-radius:20px;
+  box-shadow:0 0 20px black;
 
-      margin:auto;
-      padding:20px;
+  position:relative;
+  z-index:2;
+}
 
-      border-radius:20px;
-      box-shadow:0 0 20px black;
+button{
+  width:90%;
+  padding:15px;
+  margin:10px;
 
-      position:relative;
-      z-index:2;
-    }
+  font-size:16px;
 
-    button{
+  border:none;
+  border-radius:10px;
 
-      width:90%;
-      padding:15px;
-      margin:10px;
+  cursor:pointer;
 
-      font-size:16px;
+  background:#00aaff;
+  color:white;
 
-      border:none;
-      border-radius:10px;
+  transition:0.2s;
+}
 
-      cursor:pointer;
+button:hover{
+  transform:scale(1.03);
+  box-shadow:0 0 15px cyan;
+}
 
-      background:#00aaff;
-      color:white;
+#score{
+  margin-top:20px;
+  font-size:20px;
+}
 
-      transition:0.2s;
-    }
+@media(max-width:600px){
+  h1{ font-size:28px; }
+  h2{ font-size:20px; }
+  button{
+    font-size:16px;
+    padding:14px;
+  }
+}
 
-    button:hover{
-      transform:scale(1.03);
-      box-shadow:0 0 15px cyan;
-    }
-
-    #score{
-      margin-top:20px;
-      font-size:20px;
-    }
-
-    @media(max-width:600px){
-
-      h1{ font-size:28px; }
-      h2{ font-size:20px; }
-
-      button{
-        font-size:16px;
-        padding:14px;
-      }
-
-    }
-
-  </style>
+</style>
 
 </head>
 
 <body>
 
-<!-- ⭐ ดาว -->
+<!-- stars -->
 <div class="star" style="left:10%; animation-duration:7s;"></div>
 <div class="star" style="left:25%; animation-duration:9s;"></div>
 <div class="star" style="left:40%; animation-duration:6s;"></div>
 <div class="star" style="left:60%; animation-duration:10s;"></div>
 <div class="star" style="left:80%; animation-duration:8s;"></div>
 
-<!-- 🧪 อนุภาค -->
+<!-- particles -->
 <div class="particle" style="left:20%;"></div>
 <div class="particle" style="left:50%; animation-duration:15s;"></div>
 <div class="particle" style="left:70%; animation-duration:11s;"></div>
 
-<!-- 🔊 เสียง -->
-<audio id="correctSound"
+<!-- AUDIO -->
+<audio id="correctSound" preload="auto"
 src="https://www.soundjay.com/buttons/sounds/button-09.mp3"></audio>
 
-<audio id="wrongSound"
+<audio id="wrongSound" preload="auto"
 src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
 
 <div class="box">
 
-  <h1>🧪 Biology Quiz</h1>
+<h1>🧪 Biology Quiz</h1>
 
-  <h2 id="question">Loading...</h2>
+<h2 id="question">Loading...</h2>
 
-  <div id="answers"></div>
+<div id="answers"></div>
 
-  <p id="score">Score: 0</p>
+<p id="score">Score: 0</p>
 
 </div>
 
 <script>
 
 const quiz = [
-
 {
 question:"การแพร่ (Diffusion) คืออะไร?",
 answers:[
@@ -165,18 +158,11 @@ answers:[
 ],
 correct:0
 },
-
 {
 question:"ออสโมซิสเกี่ยวข้องกับอะไร?",
-answers:[
-"โปรตีน",
-"น้ำ",
-"DNA",
-"ออกซิเจน"
-],
+answers:["โปรตีน","น้ำ","DNA","ออกซิเจน"],
 correct:1
 },
-
 {
 question:"น้ำจะเคลื่อนที่ไปทางใดในการออสโมซิส?",
 answers:[
@@ -187,45 +173,36 @@ answers:[
 ],
 correct:1
 },
-
 {
 question:"Diffusion ต้องใช้พลังงานหรือไม่?",
-answers:[
-"ใช้ ATP",
-"ไม่ใช้พลังงาน",
-"ใช้กลูโคส",
-"ใช้เอนไซม์"
-],
+answers:["ใช้ ATP","ไม่ใช้พลังงาน","ใช้กลูโคส","ใช้เอนไซม์"],
 correct:1
 }
-
 ];
 
 let current = 0;
 let score = 0;
 
-function loadQuestion(){
+// 🔊 FIX AUDIO PLAY
+function playSound(id){
+  const s = document.getElementById(id);
+  s.currentTime = 0;
+  s.play().catch(()=>{});
+}
 
+function loadQuestion(){
   document.getElementById("question").innerText =
   quiz[current].question;
 
-  const answersDiv =
-  document.getElementById("answers");
-
+  const answersDiv = document.getElementById("answers");
   answersDiv.innerHTML = "";
 
   quiz[current].answers.forEach((answer,index)=>{
-
     const btn = document.createElement("button");
-
     btn.innerText = answer;
-
     btn.onclick = ()=>checkAnswer(index);
-
     answersDiv.appendChild(btn);
-
   });
-
 }
 
 function checkAnswer(index){
@@ -233,40 +210,26 @@ function checkAnswer(index){
   if(index == quiz[current].correct){
 
     score++;
-
-    document.getElementById("score").innerText =
-    "✅ Correct!";
-
-    document.getElementById("correctSound").play();
+    document.getElementById("score").innerText = "✅ Correct!";
+    playSound("correctSound");
 
   }else{
 
-    document.getElementById("score").innerText =
-    "❌ Wrong!";
-
-    document.getElementById("wrongSound").play();
+    document.getElementById("score").innerText = "❌ Wrong!";
+    playSound("wrongSound");
   }
 
   current++;
 
   if(current < quiz.length){
-
-    setTimeout(()=>{
-      loadQuestion();
-    },700);
-
+    setTimeout(loadQuestion,700);
   }else{
-
     setTimeout(()=>{
-
       document.querySelector(".box").innerHTML =
       `<h1>🧪 Finished!</h1>
       <h2>Your Score: ${score}/${quiz.length}</h2>`;
-
     },700);
-
   }
-
 }
 
 loadQuestion();
