@@ -11,13 +11,14 @@
 
     body{
 
-      background-image:url("https://images.unsplash.com/photo-1532187643603-ba119ca4109e");
-
-      background-size:cover;
-      background-position:center;
-      background-attachment:fixed;
+      background: radial-gradient(circle at top,
+        #0b1b2b,
+        #07111c,
+        #050b12
+      );
 
       min-height:100vh;
+      overflow:hidden;
 
       color:white;
       font-family:Arial;
@@ -25,10 +26,48 @@
       padding:20px;
     }
 
+    /* ⭐ ดาว */
+    .star{
+      position:absolute;
+      width:2px;
+      height:2px;
+      background:white;
+      border-radius:50%;
+      opacity:0.7;
+      animation:floatStar 8s linear infinite;
+    }
+
+    @keyframes floatStar{
+      from{
+        transform:translateY(100vh);
+      }
+      to{
+        transform:translateY(-10vh);
+      }
+    }
+
+    /* 🧪 อนุภาคเคมี */
+    .particle{
+      position:absolute;
+      width:6px;
+      height:6px;
+      background:rgba(0,200,255,0.4);
+      border-radius:50%;
+      animation:move 12s linear infinite;
+    }
+
+    @keyframes move{
+      0%{
+        transform:translate(0,100vh);
+      }
+      100%{
+        transform:translate(100vw,-10vh);
+      }
+    }
+
     .box{
 
       background:rgba(27,42,65,0.85);
-
       backdrop-filter:blur(6px);
 
       width:90%;
@@ -38,14 +77,15 @@
       padding:20px;
 
       border-radius:20px;
-
       box-shadow:0 0 20px black;
+
+      position:relative;
+      z-index:2;
     }
 
     button{
 
       width:90%;
-
       padding:15px;
       margin:10px;
 
@@ -63,27 +103,19 @@
     }
 
     button:hover{
-
       transform:scale(1.03);
-
       box-shadow:0 0 15px cyan;
     }
 
     #score{
-
       margin-top:20px;
       font-size:20px;
     }
 
     @media(max-width:600px){
 
-      h1{
-        font-size:28px;
-      }
-
-      h2{
-        font-size:20px;
-      }
+      h1{ font-size:28px; }
+      h2{ font-size:20px; }
 
       button{
         font-size:16px;
@@ -97,6 +129,18 @@
 </head>
 
 <body>
+
+<!-- ⭐ ดาว -->
+<div class="star" style="left:10%; animation-duration:7s;"></div>
+<div class="star" style="left:25%; animation-duration:9s;"></div>
+<div class="star" style="left:40%; animation-duration:6s;"></div>
+<div class="star" style="left:60%; animation-duration:10s;"></div>
+<div class="star" style="left:80%; animation-duration:8s;"></div>
+
+<!-- 🧪 อนุภาค -->
+<div class="particle" style="left:20%;"></div>
+<div class="particle" style="left:50%; animation-duration:15s;"></div>
+<div class="particle" style="left:70%; animation-duration:11s;"></div>
 
 <div class="box">
 
@@ -116,53 +160,45 @@ const quiz = [
 
 {
 question:"การแพร่ (Diffusion) คืออะไร?",
-
 answers:[
 "การเคลื่อนที่จากเข้มข้นมากไปน้อย",
 "การใช้งาน ATP",
 "การแบ่งเซลล์",
 "การสร้างโปรตีน"
 ],
-
 correct:0
 },
 
 {
 question:"ออสโมซิสเกี่ยวข้องกับอะไร?",
-
 answers:[
 "โปรตีน",
 "น้ำ",
 "DNA",
 "ออกซิเจน"
 ],
-
 correct:1
 },
 
 {
 question:"น้ำจะเคลื่อนที่ไปทางใดในการออสโมซิส?",
-
 answers:[
 "จากสารเข้มข้นมากไปน้อย",
 "จากน้ำมากไปน้ำน้อย",
 "จากน้ำน้อยไปน้ำมาก",
 "สุ่มทิศทาง"
 ],
-
 correct:1
 },
 
 {
 question:"Diffusion ต้องใช้พลังงานหรือไม่?",
-
 answers:[
 "ใช้ ATP",
 "ไม่ใช้พลังงาน",
 "ใช้กลูโคส",
 "ใช้เอนไซม์"
 ],
-
 correct:1
 }
 
@@ -208,7 +244,6 @@ function checkAnswer(index){
 
     document.getElementById("score").innerText =
     "❌ Wrong!";
-
   }
 
   current++;
@@ -216,9 +251,7 @@ function checkAnswer(index){
   if(current < quiz.length){
 
     setTimeout(()=>{
-
       loadQuestion();
-
     },700);
 
   }else{
@@ -226,7 +259,6 @@ function checkAnswer(index){
     setTimeout(()=>{
 
       document.querySelector(".box").innerHTML =
-
       `<h1>🧪 Finished!</h1>
       <h2>Your Score: ${score}/${quiz.length}</h2>`;
 
@@ -241,5 +273,4 @@ loadQuestion();
 </script>
 
 </body>
-
 </html>
