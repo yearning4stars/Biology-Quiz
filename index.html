@@ -3,23 +3,17 @@
 
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
 <title>Biology Quiz</title>
 
 <style>
-
-*{
-  box-sizing:border-box;
-}
 
 html, body{
   height:100%;
   margin:0;
   padding:0;
 
-  /* ✅ สำคัญ: ป้องกัน scroll ข้าง */
-  overflow-x:hidden;
-  overflow-y:auto;
+  overflow:hidden;              /* 🔒 ล็อก scroll ทั้งหมด */
+  touch-action:none;           /* 🔒 กัน swipe มือถือ */
 
   font-family:Arial;
 }
@@ -42,7 +36,6 @@ body{
   animation:floatStar 10s linear infinite;
 }
 
-/* ❌ FIX: กันหลุดจอขวา */
 @keyframes floatStar{
   from{ transform:translateY(100vh); }
   to{ transform:translateY(-10vh); }
@@ -55,18 +48,12 @@ body{
   height:6px;
   background:rgba(0,200,255,0.35);
   border-radius:50%;
-
-  /* ❌ FIX: กันใช้ vw เด็ดขาด */
   animation:move 14s linear infinite;
 }
 
 @keyframes move{
-  from{
-    transform:translate(0,100vh);
-  }
-  to{
-    transform:translate(0,-10vh);
-  }
+  0%{ transform:translate(0,100vh); }
+  100%{ transform:translate(100vw,-10vh); }
 }
 
 /* 🎮 MENU */
@@ -77,23 +64,22 @@ body{
   flex-direction:column;
   justify-content:center;
   align-items:center;
-  z-index:5;
 }
 
-/* 🎮 GAME */
+/* 🎮 GAME BOX */
 .box{
   display:none;
-  position:relative;
-
   width:92%;
   max-width:520px;
-
   margin:40px auto;
   padding:20px;
 
   background:rgba(27,42,65,0.85);
   backdrop-filter:blur(6px);
   border-radius:20px;
+
+  position:relative;
+  z-index:2;
 }
 
 button{
@@ -111,7 +97,6 @@ button{
 #timer{
   font-size:18px;
   color:#00ffb3;
-  margin:10px 0;
 }
 
 #explain{
@@ -181,19 +166,41 @@ answers:[
 "การสร้างโปรตีน"
 ],
 correct:0,
-explain:"การแพร่คือการเคลื่อนที่จากเข้มข้นสูงไปต่ำ โดยไม่ใช้พลังงาน"
+explain:"Diffusion คือการเคลื่อนที่ของสารจากเข้มข้นสูงไปต่ำ โดยไม่ใช้พลังงาน"
 },
 {
 question:"ออสโมซิสเกี่ยวข้องกับอะไร?",
 answers:["โปรตีน","น้ำ","DNA","ออกซิเจน"],
 correct:1,
-explain:"ออสโมซิสคือการเคลื่อนที่ของน้ำผ่านเยื่อเลือกผ่าน"
+explain:"Osmosis คือการเคลื่อนที่ของน้ำผ่านเยื่อเลือกผ่าน"
 },
 {
-question:"Diffusion ใช้พลังงานแบบไหน?",
+question:"น้ำจะเคลื่อนที่ไปทางใดในการออสโมซิส?",
+answers:[
+"จากสารเข้มข้นมากไปน้อย",
+"จากน้ำมากไปน้ำน้อย",
+"จากน้ำน้อยไปน้ำมาก",
+"สุ่มทิศทาง"
+],
+correct:1,
+explain:"น้ำจะเคลื่อนจากบริเวณที่มีน้ำมากไปน้ำน้อย"
+},
+{
+question:"ภาวะที่อนุภาคเท่ากันทุกบริเวณเรียกว่าอะไร?",
+answers:[
+"การออสโมซิส",
+"การแพร่แบบธรรมดา",
+"ไก่หมกหม้อ",
+"สมดุลการแพร่"
+],
+correct:3,
+explain:"เรียกว่า dynamic equilibrium หรือสมดุลการแพร่"
+},
+{
+question:"การแพร่ใช้พลังงานแบบไหน?",
 answers:["ใช้ ATP","ไม่ใช้พลังงาน","ใช้กลูโคส","ใช้เอนไซม์"],
 correct:1,
-explain:"เป็น passive transport ไม่ใช้พลังงาน"
+explain:"Diffusion เป็น passive transport ไม่ใช้พลังงาน"
 }
 ];
 
