@@ -99,6 +99,12 @@ button:hover{
   font-size:20px;
 }
 
+#explain{
+  margin-top:10px;
+  font-size:16px;
+  color:#bcdcff;
+}
+
 @media(max-width:600px){
   h1{ font-size:28px; }
   h2{ font-size:20px; }
@@ -114,18 +120,6 @@ button:hover{
 
 <body>
 
-<!-- stars -->
-<div class="star" style="left:10%; animation-duration:7s;"></div>
-<div class="star" style="left:25%; animation-duration:9s;"></div>
-<div class="star" style="left:40%; animation-duration:6s;"></div>
-<div class="star" style="left:60%; animation-duration:10s;"></div>
-<div class="star" style="left:80%; animation-duration:8s;"></div>
-
-<!-- particles -->
-<div class="particle" style="left:20%;"></div>
-<div class="particle" style="left:50%; animation-duration:15s;"></div>
-<div class="particle" style="left:70%; animation-duration:11s;"></div>
-
 <div class="box">
 
 <h1>🧪 Biology Quiz</h1>
@@ -135,6 +129,7 @@ button:hover{
 <div id="answers"></div>
 
 <p id="score">Score: 0</p>
+<p id="explain"></p>
 
 </div>
 
@@ -149,12 +144,14 @@ answers:[
 "การแบ่งเซลล์",
 "การสร้างโปรตีน"
 ],
-correct:0
+correct:0,
+explain:"Diffusion คือการเคลื่อนที่ของสารจากบริเวณเข้มข้นมากไปน้อย โดยไม่ใช้พลังงาน"
 },
 {
 question:"ออสโมซิสเกี่ยวข้องกับอะไร?",
 answers:["โปรตีน","น้ำ","DNA","ออกซิเจน"],
-correct:1
+correct:1,
+explain:"Osmosis คือการเคลื่อนที่ของน้ำผ่านเยื่อเลือกผ่าน"
 },
 {
 question:"น้ำจะเคลื่อนที่ไปทางใดในการออสโมซิส?",
@@ -164,7 +161,8 @@ answers:[
 "จากน้ำน้อยไปน้ำมาก",
 "สุ่มทิศทาง"
 ],
-correct:1
+correct:1,
+explain:"น้ำจะเคลื่อนที่จากบริเวณที่มีน้ำมากไปน้ำน้อย"
 },
 {
 question:"ภาวะที่อนุภาคของสารกระจายตัวจนมีความเข้มข้นเท่ากันทุกบริเวณเรียกว่าอะไร?",
@@ -174,16 +172,20 @@ answers:[
 "ไก่หมกหม้อ",
 "สมดุลของการแพร่"
 ],
-correct:3
+correct:3,
+explain:"เรียกว่า dynamic equilibrium หรือสมดุลของการแพร่"
 },
 {
 question:"การแพร่ (Diffusion) ใช้พลังงานแบบไหน?",
 answers:["ใช้ ATP","ไม่ใช้พลังงาน","ใช้กลูโคส","ใช้เอนไซม์"],
-correct:1
+correct:1,
+explain:"Diffusion เป็น passive transport ไม่ใช้พลังงาน"
 }
 ];
 
-// 🔀 ฟังก์ชันสุ่ม
+let current = 0;
+let score = 0;
+
 function shuffle(array){
   for(let i = array.length - 1; i > 0; i--){
     const j = Math.floor(Math.random() * (i + 1));
@@ -191,11 +193,7 @@ function shuffle(array){
   }
 }
 
-// ✅ สุ่มคำถามตอนเริ่มเกม (สำคัญมาก)
 shuffle(quiz);
-
-let current = 0;
-let score = 0;
 
 function loadQuestion(){
 
@@ -210,36 +208,45 @@ function loadQuestion(){
 
   const answersDiv = document.getElementById("answers");
   answersDiv.innerHTML = "";
+  document.getElementById("explain").innerText = "";
 
   document.getElementById("question").innerText = q.question;
 
   answers.forEach(a => {
     const btn = document.createElement("button");
     btn.innerText = a.text;
-    btn.onclick = () => checkAnswer(a.correct);
+    btn.onclick = () => checkAnswer(a.correct, a.text, q);
     answersDiv.appendChild(btn);
   });
 }
 
-function checkAnswer(isCorrect){
+function checkAnswer(isCorrect, selectedText, q){
+
+  const correctText = q.answers[q.correct];
 
   if(isCorrect){
     score++;
     document.getElementById("score").innerText = "✅ Correct!";
+    document.getElementById("explain").innerText =
+      "✔ ถูกต้อง! " + q.explain;
   }else{
     document.getElementById("score").innerText = "❌ Wrong!";
+    document.getElementById("explain").innerText =
+      "❌ คุณเลือก: " + selectedText + "\n" +
+      "✔ คำตอบที่ถูกคือ: " + correctText + "\n\n" +
+      q.explain;
   }
 
   current++;
 
   if(current < quiz.length){
-    setTimeout(loadQuestion,700);
+    setTimeout(loadQuestion,2000);
   }else{
     setTimeout(()=>{
       document.querySelector(".box").innerHTML =
       `<h1>🧪 Finished!</h1>
       <h2>Your Score: ${score}/${quiz.length}</h2>`;
-    },700);
+    },2000);
   }
 }
 
