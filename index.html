@@ -17,7 +17,7 @@ body{
   overflow:hidden;
 }
 
-/* ⭐ ดาว */
+/* 🌟 STAR */
 .star{
   position:absolute;
   width:2px;
@@ -25,7 +25,7 @@ body{
   background:white;
   border-radius:50%;
   opacity:0.7;
-  animation:floatStar 8s linear infinite;
+  animation:floatStar 10s linear infinite;
 }
 
 @keyframes floatStar{
@@ -33,7 +33,7 @@ body{
   to{ transform:translateY(-10vh); }
 }
 
-/* 🧪 อนุภาคเคมี */
+/* 🧪 PARTICLE */
 .particle{
   position:absolute;
   width:6px;
@@ -48,7 +48,34 @@ body{
   100%{ transform:translate(100vw,-10vh); }
 }
 
+/* 🎮 MENU */
+#menu{
+  position:absolute;
+  width:100%;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+#menu button{
+  padding:15px 30px;
+  font-size:18px;
+  border:none;
+  border-radius:12px;
+  background:#00aaff;
+  color:white;
+  cursor:pointer;
+}
+
+#menu button:hover{
+  transform:scale(1.05);
+}
+
+/* 🧪 GAME */
 .box{
+  display:none;
   background:rgba(27,42,65,0.85);
   backdrop-filter:blur(6px);
   width:90%;
@@ -68,6 +95,10 @@ button{
   cursor:pointer;
   background:#00aaff;
   color:white;
+}
+
+button:hover{
+  box-shadow:0 0 15px cyan;
 }
 
 #timer{
@@ -98,19 +129,27 @@ button{
 
 <body>
 
-<!-- ⭐ ดาว -->
+<!-- 🌟 STAR BACKGROUND -->
 <div class="star" style="left:10%; animation-duration:7s;"></div>
 <div class="star" style="left:25%; animation-duration:9s;"></div>
 <div class="star" style="left:40%; animation-duration:6s;"></div>
 <div class="star" style="left:60%; animation-duration:10s;"></div>
 <div class="star" style="left:80%; animation-duration:8s;"></div>
 
-<!-- 🧪 อนุภาค -->
+<!-- 🧪 PARTICLES -->
 <div class="particle" style="left:20%;"></div>
 <div class="particle" style="left:50%; animation-duration:15s;"></div>
 <div class="particle" style="left:70%; animation-duration:11s;"></div>
 
-<div class="box">
+<!-- 🎮 MENU -->
+<div id="menu">
+  <h1>🧪 Biology Quiz</h1>
+  <p>Press Start to begin</p>
+  <button onclick="startGame()">▶ Start Quiz</button>
+</div>
+
+<!-- 🧪 GAME -->
+<div class="box" id="game">
 
 <h1>🧪 Biology Quiz</h1>
 
@@ -138,7 +177,7 @@ answers:[
 "การสร้างโปรตีน"
 ],
 correct:0,
-explain:"Diffusion เป็นการเคลื่อนที่ของสารจากเข้มข้นสูงไปต่ำ โดยไม่ใช้พลังงาน"
+explain:"Diffusion คือการเคลื่อนที่ของสารจากเข้มข้นสูงไปต่ำ โดยไม่ใช้พลังงาน"
 },
 {
 question:"ออสโมซิสเกี่ยวข้องกับอะไร?",
@@ -176,21 +215,27 @@ explain:"Diffusion เป็น passive transport ไม่ใช้พลัง
 }
 ];
 
-let i=0;
-let score=0;
-let time=30;
+let i = 0;
+let score = 0;
+let time = 30;
 let timer;
-let locked=false;
+let locked = false;
+
+function startGame(){
+  document.getElementById("menu").style.display="none";
+  document.getElementById("game").style.display="block";
+  load();
+}
 
 function startTimer(){
-  time=30;
-  document.getElementById("timer").innerText="Time: "+time;
+  time = 30;
+  document.getElementById("timer").innerText = "Time: " + time;
 
-  timer=setInterval(()=>{
+  timer = setInterval(()=>{
     time--;
-    document.getElementById("timer").innerText="Time: "+time;
+    document.getElementById("timer").innerText = "Time: " + time;
 
-    if(time<=0){
+    if(time <= 0){
       clearInterval(timer);
       fail();
     }
@@ -198,20 +243,21 @@ function startTimer(){
 }
 
 function load(){
-  locked=false;
+
+  locked = false;
   document.getElementById("nextBtn").style.display="none";
   document.getElementById("explain").innerText="";
 
-  let q=quiz[i];
-  document.getElementById("question").innerText=q.question;
-  document.getElementById("answers").innerHTML="";
+  let q = quiz[i];
+  document.getElementById("question").innerText = q.question;
+  document.getElementById("answers").innerHTML = "";
 
   startTimer();
 
   q.answers.forEach((a,idx)=>{
-    let b=document.createElement("button");
-    b.innerText=a;
-    b.onclick=()=>check(idx);
+    let b = document.createElement("button");
+    b.innerText = a;
+    b.onclick = ()=>check(idx);
     document.getElementById("answers").appendChild(b);
   });
 }
@@ -219,21 +265,21 @@ function load(){
 function check(idx){
 
   if(locked) return;
-  locked=true;
+  locked = true;
 
   clearInterval(timer);
 
-  let q=quiz[i];
-  let correctText=q.answers[q.correct];
+  let q = quiz[i];
+  let correctText = q.answers[q.correct];
 
-  if(idx===q.correct){
+  if(idx === q.correct){
     score++;
-    document.getElementById("score").innerText="✅ Correct!";
-    document.getElementById("explain").innerText="✔ ถูกต้อง!\n"+q.explain;
+    document.getElementById("score").innerText = "✅ Correct!";
+    document.getElementById("explain").innerText = "✔ ถูกต้อง!\n" + q.explain;
   }else{
-    document.getElementById("score").innerText="❌ Wrong!";
-    document.getElementById("explain").innerText=
-      "❌ ผิดเพราะคำตอบนี้ไม่ถูกหลักชีวะ\n" +
+    document.getElementById("score").innerText = "❌ Wrong!";
+    document.getElementById("explain").innerText =
+      "❌ ผิดเพราะเหตุผลทางชีวะ\n" +
       "✔ คำตอบที่ถูกคือ: " + correctText + "\n\n" +
       q.explain;
   }
@@ -242,12 +288,12 @@ function check(idx){
 }
 
 function fail(){
-  locked=true;
-  let q=quiz[i];
+  locked = true;
+  let q = quiz[i];
 
-  document.getElementById("score").innerText="⏰ Time Out!";
-  document.getElementById("explain").innerText=
-    "❌ หมดเวลา\n✔ คำตอบที่ถูกคือ: " + q.answers[q.correct] + "\n\n" +
+  document.getElementById("score").innerText = "⏰ Time Out!";
+  document.getElementById("explain").innerText =
+    "❌ หมดเวลา\n✔ คำตอบคือ: " + q.answers[q.correct] + "\n\n" +
     q.explain;
 
   document.getElementById("nextBtn").style.display="block";
@@ -255,16 +301,14 @@ function fail(){
 
 function nextQuestion(){
   i++;
-  if(i<quiz.length){
+  if(i < quiz.length){
     load();
   }else{
-    document.querySelector(".box").innerHTML=
+    document.querySelector(".box").innerHTML =
     `<h1>Finished 🧪</h1>
      <h2>Score: ${score}/${quiz.length}</h2>`;
   }
 }
-
-load();
 
 </script>
 
