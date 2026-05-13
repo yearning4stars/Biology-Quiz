@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Biology Quiz</title>
 
   <style>
+
     body{
       background:#101820;
       color:white;
@@ -14,53 +18,63 @@
     }
 
     .box{
-  background:#1b2a41;
-  width:90%;
-  max-width:500px;
+      background:#1b2a41;
 
-  margin:auto;
-  padding:20px;
+      width:90%;
+      max-width:500px;
 
-  border-radius:20px;
-  box-shadow:0 0 20px black;
-}
+      margin:auto;
+      padding:20px;
+
+      border-radius:20px;
+      box-shadow:0 0 20px black;
+    }
 
     button{
       width:90%;
+
       padding:15px;
       margin:10px;
+
       font-size:16px;
+
       border:none;
       border-radius:10px;
+
       cursor:pointer;
+
+      background:#00aaff;
+      color:white;
     }
 
     button:hover{
-  transform:scale(1.03);
-}
-
-@media(max-width:600px){
-
-  h1{
-    font-size:28px;
-  }
-
-  h2{
-    font-size:20px;
-  }
-
-  button{
-    font-size:16px;
-    padding:14px;
-  }
-
-}
+      transform:scale(1.03);
+    }
 
     #score{
       margin-top:20px;
       font-size:20px;
     }
+
+    @media(max-width:600px){
+
+      h1{
+        font-size:28px;
+      }
+
+      h2{
+        font-size:20px;
+      }
+
+      button{
+        font-size:16px;
+        padding:14px;
+      }
+
+    }
+
   </style>
+
 </head>
 
 <body>
@@ -83,45 +97,53 @@ const quiz = [
 
 {
 question:"การแพร่ (Diffusion) คืออะไร?",
+
 answers:[
 "การเคลื่อนที่จากเข้มข้นมากไปน้อย",
 "การใช้งาน ATP",
 "การแบ่งเซลล์",
 "การสร้างโปรตีน"
 ],
+
 correct:0
 },
 
 {
 question:"ออสโมซิสเกี่ยวข้องกับอะไร?",
+
 answers:[
 "โปรตีน",
 "น้ำ",
 "DNA",
 "ออกซิเจน"
 ],
+
 correct:1
 },
 
 {
 question:"น้ำจะเคลื่อนที่ไปทางใดในการออสโมซิส?",
+
 answers:[
 "จากสารเข้มข้นมากไปน้อย",
 "จากน้ำมากไปน้ำน้อย",
 "จากน้ำน้อยไปน้ำมาก",
 "สุ่มทิศทาง"
 ],
+
 correct:1
 },
 
 {
 question:"Diffusion ต้องใช้พลังงานหรือไม่?",
+
 answers:[
 "ใช้ ATP",
 "ไม่ใช้พลังงาน",
 "ใช้กลูโคส",
 "ใช้เอนไซม์"
 ],
+
 correct:1
 }
 
@@ -132,61 +154,71 @@ let score = 0;
 
 function loadQuestion(){
 
-document.getElementById("question").innerText =
-quiz[current].question;
+  document.getElementById("question").innerText =
+  quiz[current].question;
 
-const answersDiv =
-document.getElementById("answers");
+  const answersDiv =
+  document.getElementById("answers");
 
-answersDiv.innerHTML = "";
+  answersDiv.innerHTML = "";
 
-quiz[current].answers.forEach((answer,index)=>{
+  quiz[current].answers.forEach((answer,index)=>{
 
-const btn = document.createElement("button");
+    const btn = document.createElement("button");
 
-btn.innerText = answer;
+    btn.innerText = answer;
 
-btn.onclick = ()=>checkAnswer(index);
+    btn.onclick = ()=>checkAnswer(index);
 
-answersDiv.appendChild(btn);
+    answersDiv.appendChild(btn);
 
-});
+  });
 
 }
 
 function checkAnswer(index){
 
-if(index == quiz[current].correct){
+  if(index == quiz[current].correct){
 
-score++;
+    score++;
 
-document.getElementById("score").innerText =
-"✅ Correct!";
+    document.getElementById("score").innerText =
+    "✅ Correct!";
 
-}else{
+  }else{
 
-document.getElementById("score").innerText =
-"❌ Wrong!";
+    document.getElementById("score").innerText =
+    "❌ Wrong!";
+
+  }
+
+  current++;
+
+  if(current < quiz.length){
+
+    setTimeout(()=>{
+      loadQuestion();
+    },700);
+
+  }else{
+
+    setTimeout(()=>{
+
+      document.querySelector(".box").innerHTML =
+
+      `<h1>Finished!</h1>
+      <h2>Your Score: ${score}/${quiz.length}</h2>`;
+
+    },700);
+
+  }
 
 }
-
-current++;
-
-if(current < quiz.length){
-
-loadQuestion();
-
-}else{
-
-document.querySelector(".box").innerHTML =
-`<h1>Finished!</h1>
-<h2>Your Score: ${score}/${quiz.length}</h2>`;
 
 loadQuestion();
 
 </script>
 
 </body>
-</html>
 
-<!-- update -->
+</html>
