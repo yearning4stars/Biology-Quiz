@@ -7,14 +7,18 @@
 
 <style>
 
+html, body{
+  height:100%;
+  overflow:hidden;
+  touch-action:none;
+}
+
 body{
   background: radial-gradient(circle at top,#0b1b2b,#07111c,#050b12);
-  min-height:100vh;
   color:white;
   font-family:Arial;
   text-align:center;
   padding:20px;
-  overflow:hidden;
 }
 
 /* 🌟 STAR */
@@ -73,7 +77,7 @@ body{
   transform:scale(1.05);
 }
 
-/* 🧪 GAME */
+/* 🧪 GAME BOX */
 .box{
   display:none;
   background:rgba(27,42,65,0.85);
@@ -83,6 +87,10 @@ body{
   margin:auto;
   padding:20px;
   border-radius:20px;
+
+  /* 🔧 FIX MOBILE */
+  max-height:90vh;
+  overflow-y:auto;
 }
 
 button{
@@ -129,14 +137,14 @@ button:hover{
 
 <body>
 
-<!-- 🌟 STAR BACKGROUND -->
+<!-- 🌟 STAR -->
 <div class="star" style="left:10%; animation-duration:7s;"></div>
 <div class="star" style="left:25%; animation-duration:9s;"></div>
 <div class="star" style="left:40%; animation-duration:6s;"></div>
 <div class="star" style="left:60%; animation-duration:10s;"></div>
 <div class="star" style="left:80%; animation-duration:8s;"></div>
 
-<!-- 🧪 PARTICLES -->
+<!-- 🧪 PARTICLE -->
 <div class="particle" style="left:20%;"></div>
 <div class="particle" style="left:50%; animation-duration:15s;"></div>
 <div class="particle" style="left:70%; animation-duration:11s;"></div>
