@@ -2,23 +2,28 @@
 <html>
 
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Biology Quiz</title>
 
 <style>
 
-html, body{
-  height:100%;
-  overflow:hidden;
-  touch-action:none;
+*{
+  box-sizing:border-box;
 }
 
+html, body{
+  height:100%;
+  margin:0;
+  padding:0;
+  overflow:hidden;
+  font-family:Arial;
+}
+
+/* 🌌 BACKGROUND */
 body{
   background: radial-gradient(circle at top,#0b1b2b,#07111c,#050b12);
   color:white;
-  font-family:Arial;
   text-align:center;
-  padding:20px;
 }
 
 /* 🌟 STAR */
@@ -42,9 +47,9 @@ body{
   position:absolute;
   width:6px;
   height:6px;
-  background:rgba(0,200,255,0.4);
+  background:rgba(0,200,255,0.35);
   border-radius:50%;
-  animation:move 12s linear infinite;
+  animation:move 14s linear infinite;
 }
 
 @keyframes move{
@@ -52,51 +57,37 @@ body{
   100%{ transform:translate(100vw,-10vh); }
 }
 
-/* 🎮 MENU */
+/* 🎮 MENU FIXED CENTER */
 #menu{
-  position:absolute;
-  width:100%;
-  height:100%;
+  position:fixed;
+  inset:0;
   display:flex;
   flex-direction:column;
   justify-content:center;
   align-items:center;
+  z-index:5;
 }
 
-#menu button{
-  padding:15px 30px;
-  font-size:18px;
-  border:none;
-  border-radius:12px;
-  background:#00aaff;
-  color:white;
-  cursor:pointer;
-}
-
-#menu button:hover{
-  transform:scale(1.05);
-}
-
-/* 🧪 GAME BOX */
+/* 🎮 GAME */
 .box{
   display:none;
+  position:relative;
+  z-index:2;
+
+  width:92%;
+  max-width:520px;
+  margin:40px auto;
+  padding:20px;
+
   background:rgba(27,42,65,0.85);
   backdrop-filter:blur(6px);
-  width:90%;
-  max-width:500px;
-  margin:auto;
-  padding:20px;
   border-radius:20px;
-
-  /* 🔧 FIX MOBILE */
-  max-height:90vh;
-  overflow-y:auto;
 }
 
 button{
   width:90%;
-  padding:15px;
-  margin:10px;
+  padding:14px;
+  margin:8px;
   font-size:16px;
   border:none;
   border-radius:10px;
@@ -105,14 +96,10 @@ button{
   color:white;
 }
 
-button:hover{
-  box-shadow:0 0 15px cyan;
-}
-
 #timer{
   font-size:18px;
-  margin:10px;
   color:#00ffb3;
+  margin:10px 0;
 }
 
 #explain{
@@ -149,27 +136,24 @@ button:hover{
 <div class="particle" style="left:50%; animation-duration:15s;"></div>
 <div class="particle" style="left:70%; animation-duration:11s;"></div>
 
-<!-- 🎮 MENU -->
+<!-- MENU -->
 <div id="menu">
   <h1>🧪 Biology Quiz</h1>
-  <p>Press Start to begin</p>
-  <button onclick="startGame()">▶ Start Quiz</button>
+  <button onclick="startGame()">▶ Start</button>
 </div>
 
-<!-- 🧪 GAME -->
+<!-- GAME -->
 <div class="box" id="game">
 
-<h1>🧪 Biology Quiz</h1>
-
+<h2 id="question">Loading...</h2>
 <div id="timer">Time: 30</div>
 
-<h2 id="question">Loading...</h2>
 <div id="answers"></div>
 
 <p id="score">Score: 0</p>
 <p id="explain"></p>
 
-<button id="nextBtn" onclick="nextQuestion()">Next Question ➜</button>
+<button id="nextBtn" onclick="nextQuestion()">Next ➜</button>
 
 </div>
 
@@ -185,49 +169,27 @@ answers:[
 "การสร้างโปรตีน"
 ],
 correct:0,
-explain:"Diffusion คือการเคลื่อนที่ของสารจากเข้มข้นสูงไปต่ำ โดยไม่ใช้พลังงาน"
+explain:"การแพร่คือการเคลื่อนที่จากเข้มข้นสูงไปต่ำ โดยไม่ใช้พลังงาน"
 },
 {
 question:"ออสโมซิสเกี่ยวข้องกับอะไร?",
 answers:["โปรตีน","น้ำ","DNA","ออกซิเจน"],
 correct:1,
-explain:"Osmosis คือการเคลื่อนที่ของน้ำผ่านเยื่อเลือกผ่าน"
+explain:"ออสโมซิสคือการเคลื่อนที่ของน้ำผ่านเยื่อเลือกผ่าน"
 },
 {
-question:"น้ำจะเคลื่อนที่ไปทางใดในการออสโมซิส?",
-answers:[
-"จากสารเข้มข้นมากไปน้อย",
-"จากน้ำมากไปน้ำน้อย",
-"จากน้ำน้อยไปน้ำมาก",
-"สุ่มทิศทาง"
-],
-correct:1,
-explain:"น้ำจะเคลื่อนจากบริเวณที่มีน้ำมากไปน้ำน้อย"
-},
-{
-question:"ภาวะที่อนุภาคเท่ากันทุกบริเวณเรียกว่าอะไร?",
-answers:[
-"การออสโมซิส",
-"การแพร่แบบธรรมดา",
-"ไก่หมกหม้อ",
-"สมดุลการแพร่"
-],
-correct:3,
-explain:"เรียกว่า dynamic equilibrium หรือสมดุลการแพร่"
-},
-{
-question:"การแพร่ใช้พลังงานแบบไหน?",
+question:"Diffusion ใช้พลังงานแบบไหน?",
 answers:["ใช้ ATP","ไม่ใช้พลังงาน","ใช้กลูโคส","ใช้เอนไซม์"],
 correct:1,
-explain:"Diffusion เป็น passive transport ไม่ใช้พลังงาน"
+explain:"เป็น passive transport ไม่ใช้พลังงาน"
 }
 ];
 
-let i = 0;
-let score = 0;
-let time = 30;
+let i=0;
+let score=0;
+let time=30;
 let timer;
-let locked = false;
+let locked=false;
 
 function startGame(){
   document.getElementById("menu").style.display="none";
@@ -236,14 +198,14 @@ function startGame(){
 }
 
 function startTimer(){
-  time = 30;
-  document.getElementById("timer").innerText = "Time: " + time;
+  time=30;
+  document.getElementById("timer").innerText="Time: "+time;
 
-  timer = setInterval(()=>{
+  timer=setInterval(()=>{
     time--;
-    document.getElementById("timer").innerText = "Time: " + time;
+    document.getElementById("timer").innerText="Time: "+time;
 
-    if(time <= 0){
+    if(time<=0){
       clearInterval(timer);
       fail();
     }
@@ -252,20 +214,20 @@ function startTimer(){
 
 function load(){
 
-  locked = false;
+  locked=false;
   document.getElementById("nextBtn").style.display="none";
   document.getElementById("explain").innerText="";
 
-  let q = quiz[i];
-  document.getElementById("question").innerText = q.question;
-  document.getElementById("answers").innerHTML = "";
+  let q=quiz[i];
+  document.getElementById("question").innerText=q.question;
+  document.getElementById("answers").innerHTML="";
 
   startTimer();
 
   q.answers.forEach((a,idx)=>{
-    let b = document.createElement("button");
-    b.innerText = a;
-    b.onclick = ()=>check(idx);
+    let b=document.createElement("button");
+    b.innerText=a;
+    b.onclick=()=>check(idx);
     document.getElementById("answers").appendChild(b);
   });
 }
@@ -273,48 +235,43 @@ function load(){
 function check(idx){
 
   if(locked) return;
-  locked = true;
+  locked=true;
 
   clearInterval(timer);
 
-  let q = quiz[i];
-  let correctText = q.answers[q.correct];
+  let q=quiz[i];
+  let correctText=q.answers[q.correct];
 
-  if(idx === q.correct){
+  if(idx===q.correct){
     score++;
-    document.getElementById("score").innerText = "✅ Correct!";
-    document.getElementById("explain").innerText = "✔ ถูกต้อง!\n" + q.explain;
+    document.getElementById("score").innerText="Score: "+score;
+    document.getElementById("explain").innerText="✔ ถูกต้อง\n"+q.explain;
   }else{
-    document.getElementById("score").innerText = "❌ Wrong!";
-    document.getElementById("explain").innerText =
-      "❌ ผิดเพราะเหตุผลทางชีวะ\n" +
-      "✔ คำตอบที่ถูกคือ: " + correctText + "\n\n" +
-      q.explain;
+    document.getElementById("score").innerText="Score: "+score;
+    document.getElementById("explain").innerText=
+      "❌ ผิด\nคำตอบที่ถูก: "+correctText+"\n\n"+q.explain;
   }
 
   document.getElementById("nextBtn").style.display="block";
 }
 
 function fail(){
-  locked = true;
-  let q = quiz[i];
+  locked=true;
+  let q=quiz[i];
 
-  document.getElementById("score").innerText = "⏰ Time Out!";
-  document.getElementById("explain").innerText =
-    "❌ หมดเวลา\n✔ คำตอบคือ: " + q.answers[q.correct] + "\n\n" +
-    q.explain;
+  document.getElementById("explain").innerText=
+    "⏰ หมดเวลา\nคำตอบที่ถูก: "+q.answers[q.correct]+"\n\n"+q.explain;
 
   document.getElementById("nextBtn").style.display="block";
 }
 
 function nextQuestion(){
   i++;
-  if(i < quiz.length){
+  if(i<quiz.length){
     load();
   }else{
-    document.querySelector(".box").innerHTML =
-    `<h1>Finished 🧪</h1>
-     <h2>Score: ${score}/${quiz.length}</h2>`;
+    document.getElementById("game").innerHTML=
+    `<h1>Finished 🧪</h1><h2>Score: ${score}/${quiz.length}</h2>`;
   }
 }
 
