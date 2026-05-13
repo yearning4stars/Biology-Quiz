@@ -3,6 +3,7 @@
 
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 <title>Biology Quiz</title>
 
 <style>
@@ -15,7 +16,11 @@ html, body{
   height:100%;
   margin:0;
   padding:0;
-  overflow:hidden;
+
+  /* ✅ สำคัญ: ป้องกัน scroll ข้าง */
+  overflow-x:hidden;
+  overflow-y:auto;
+
   font-family:Arial;
 }
 
@@ -37,6 +42,7 @@ body{
   animation:floatStar 10s linear infinite;
 }
 
+/* ❌ FIX: กันหลุดจอขวา */
 @keyframes floatStar{
   from{ transform:translateY(100vh); }
   to{ transform:translateY(-10vh); }
@@ -49,15 +55,21 @@ body{
   height:6px;
   background:rgba(0,200,255,0.35);
   border-radius:50%;
+
+  /* ❌ FIX: กันใช้ vw เด็ดขาด */
   animation:move 14s linear infinite;
 }
 
 @keyframes move{
-  0%{ transform:translate(0,100vh); }
-  100%{ transform:translate(100vw,-10vh); }
+  from{
+    transform:translate(0,100vh);
+  }
+  to{
+    transform:translate(0,-10vh);
+  }
 }
 
-/* 🎮 MENU FIXED CENTER */
+/* 🎮 MENU */
 #menu{
   position:fixed;
   inset:0;
@@ -72,10 +84,10 @@ body{
 .box{
   display:none;
   position:relative;
-  z-index:2;
 
   width:92%;
   max-width:520px;
+
   margin:40px auto;
   padding:20px;
 
