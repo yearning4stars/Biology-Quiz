@@ -26,7 +26,6 @@
       padding:20px;
     }
 
-    /* ⭐ ดาว */
     .star{
       position:absolute;
       width:2px;
@@ -38,15 +37,10 @@
     }
 
     @keyframes floatStar{
-      from{
-        transform:translateY(100vh);
-      }
-      to{
-        transform:translateY(-10vh);
-      }
+      from{ transform:translateY(100vh); }
+      to{ transform:translateY(-10vh); }
     }
 
-    /* 🧪 อนุภาคเคมี */
     .particle{
       position:absolute;
       width:6px;
@@ -57,12 +51,8 @@
     }
 
     @keyframes move{
-      0%{
-        transform:translate(0,100vh);
-      }
-      100%{
-        transform:translate(100vw,-10vh);
-      }
+      0%{ transform:translate(0,100vh); }
+      100%{ transform:translate(100vw,-10vh); }
     }
 
     .box{
@@ -141,6 +131,13 @@
 <div class="particle" style="left:20%;"></div>
 <div class="particle" style="left:50%; animation-duration:15s;"></div>
 <div class="particle" style="left:70%; animation-duration:11s;"></div>
+
+<!-- 🔊 เสียง -->
+<audio id="correctSound"
+src="https://www.soundjay.com/buttons/sounds/button-09.mp3"></audio>
+
+<audio id="wrongSound"
+src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
 
 <div class="box">
 
@@ -240,10 +237,14 @@ function checkAnswer(index){
     document.getElementById("score").innerText =
     "✅ Correct!";
 
+    document.getElementById("correctSound").play();
+
   }else{
 
     document.getElementById("score").innerText =
     "❌ Wrong!";
+
+    document.getElementById("wrongSound").play();
   }
 
   current++;
