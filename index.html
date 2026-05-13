@@ -126,13 +126,6 @@ button:hover{
 <div class="particle" style="left:50%; animation-duration:15s;"></div>
 <div class="particle" style="left:70%; animation-duration:11s;"></div>
 
-<!-- AUDIO -->
-<audio id="correctSound" preload="auto"
-src="https://www.soundjay.com/buttons/sounds/button-09.mp3"></audio>
-
-<audio id="wrongSound" preload="auto"
-src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
-
 <div class="box">
 
 <h1>🧪 Biology Quiz</h1>
@@ -183,40 +176,47 @@ correct:1
 let current = 0;
 let score = 0;
 
-// 🔊 FIX AUDIO PLAY
-function playSound(id){
-  const s = document.getElementById(id);
-  s.currentTime = 0;
-  s.play().catch(()=>{});
+// 🔀 shuffle function
+function shuffle(array){
+  for(let i = array.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
 }
 
 function loadQuestion(){
-  document.getElementById("question").innerText =
-  quiz[current].question;
+
+  let q = quiz[current];
+
+  // 🧠 shuffle answers BUT keep correct tracking
+  let answers = q.answers
+    .map((text, i) => ({
+      text,
+      correct: i === q.correct
+    }))
+    .sort(() => Math.random() - 0.5);
 
   const answersDiv = document.getElementById("answers");
   answersDiv.innerHTML = "";
 
-  quiz[current].answers.forEach((answer,index)=>{
+  document.getElementById("question").innerText = q.question;
+
+  answers.forEach(a => {
     const btn = document.createElement("button");
-    btn.innerText = answer;
-    btn.onclick = ()=>checkAnswer(index);
+    btn.innerText = a.text;
+    btn.onclick = () => checkAnswer(a.correct);
     answersDiv.appendChild(btn);
   });
 }
 
-function checkAnswer(index){
+function checkAnswer(isCorrect){
 
-  if(index == quiz[current].correct){
-
+  if(isCorrect){
     score++;
     document.getElementById("score").innerText = "✅ Correct!";
-    playSound("correctSound");
-
   }else{
-
     document.getElementById("score").innerText = "❌ Wrong!";
-    playSound("wrongSound");
   }
 
   current++;
