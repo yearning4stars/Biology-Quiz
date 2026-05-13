@@ -160,11 +160,13 @@ if(index == quiz[current].correct){
 
 score++;
 
-alert("Correct!");
+document.getElementById("score").innerText =
+"✅ Correct!";
 
 }else{
 
-alert("Wrong!");
+document.getElementById("score").innerText =
+"❌ Wrong!";
 
 }
 
@@ -182,8 +184,6 @@ document.querySelector(".box").innerHTML =
 
 }
 
-document.getElementById("score").innerText =
-"Score: " + score;
 
 }
 
