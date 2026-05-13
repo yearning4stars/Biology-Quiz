@@ -10,7 +10,15 @@
   <style>
 
     body{
-      background:#101820;
+
+      background-image:url("https://images.unsplash.com/photo-1532187643603-ba119ca4109e");
+
+      background-size:cover;
+      background-position:center;
+      background-attachment:fixed;
+
+      min-height:100vh;
+
       color:white;
       font-family:Arial;
       text-align:center;
@@ -18,7 +26,10 @@
     }
 
     .box{
-      background:#1b2a41;
+
+      background:rgba(27,42,65,0.85);
+
+      backdrop-filter:blur(6px);
 
       width:90%;
       max-width:500px;
@@ -27,10 +38,12 @@
       padding:20px;
 
       border-radius:20px;
+
       box-shadow:0 0 20px black;
     }
 
     button{
+
       width:90%;
 
       padding:15px;
@@ -45,13 +58,19 @@
 
       background:#00aaff;
       color:white;
+
+      transition:0.2s;
     }
 
     button:hover{
+
       transform:scale(1.03);
+
+      box-shadow:0 0 15px cyan;
     }
 
     #score{
+
       margin-top:20px;
       font-size:20px;
     }
@@ -81,7 +100,7 @@
 
 <div class="box">
 
-  <h1>Biology Quiz</h1>
+  <h1>🧪 Biology Quiz</h1>
 
   <h2 id="question">Loading...</h2>
 
@@ -197,7 +216,9 @@ function checkAnswer(index){
   if(current < quiz.length){
 
     setTimeout(()=>{
+
       loadQuestion();
+
     },700);
 
   }else{
@@ -206,7 +227,7 @@ function checkAnswer(index){
 
       document.querySelector(".box").innerHTML =
 
-      `<h1>Finished!</h1>
+      `<h1>🧪 Finished!</h1>
       <h2>Your Score: ${score}/${quiz.length}</h2>`;
 
     },700);
