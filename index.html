@@ -3,14 +3,13 @@
 
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Biology Quiz Pro</title>
+<title>Biology Quiz</title>
 
 <style>
 
 body{
   background: radial-gradient(circle at top,#0b1b2b,#07111c,#050b12);
   min-height:100vh;
-  overflow:hidden;
   color:white;
   font-family:Arial;
   text-align:center;
@@ -25,7 +24,6 @@ body{
   margin:auto;
   padding:20px;
   border-radius:20px;
-  box-shadow:0 0 20px black;
 }
 
 button{
@@ -40,34 +38,27 @@ button{
   color:white;
 }
 
-button:hover{
-  transform:scale(1.03);
-}
-
-#bar{
-  width:100%;
-  height:10px;
-  background:#233;
-  border-radius:10px;
-  margin:10px 0;
-}
-
-#fill{
-  height:10px;
-  width:100%;
-  background:#00ffb3;
-  border-radius:10px;
-  transition:width 1s linear;
-}
-
 #timer{
   font-size:18px;
   margin:10px;
+  color:#00ffb3;
 }
 
-#combo{
-  font-size:16px;
-  color:#ffd700;
+#explain{
+  margin-top:10px;
+  color:#bcdcff;
+  white-space:pre-line;
+}
+
+#nextBtn{
+  display:none;
+  width:90%;
+  padding:12px;
+  margin-top:10px;
+  background:#00ffb3;
+  color:black;
+  font-weight:bold;
+  border-radius:10px;
 }
 
 </style>
@@ -77,132 +68,156 @@ button:hover{
 
 <div class="box">
 
-<h1>🧪 Biology Quiz Pro</h1>
+<h1>🧪 Biology Quiz</h1>
 
-<div id="bar"><div id="fill"></div></div>
-<div id="timer">Time: 10</div>
-<div id="combo">Combo: 0</div>
+<div id="timer">Time: 30</div>
 
-<h2 id="question"></h2>
+<h2 id="question">Loading...</h2>
 <div id="answers"></div>
 
 <p id="score">Score: 0</p>
+<p id="explain"></p>
+
+<button id="nextBtn" onclick="nextQuestion()">Next Question ➜</button>
 
 </div>
 
 <script>
 
-const allQuiz = [
-{q:"Diffusion คืออะไร?",a:["เข้ม→จาง","ใช้ ATP","แบ่งเซลล์","สร้างโปรตีน"],c:0},
-{q:"Osmosis คืออะไร?",a:["โปรตีน","น้ำ","DNA","ออกซิเจน"],c:1},
-{q:"น้ำเคลื่อนที่แบบออสโมซิสไปทางใด?",a:["เข้ม→จางน้ำ","น้ำมาก→น้ำน้อย","น้ำน้อย→น้ำมาก","สุ่ม"],c:1},
-{q:"Diffusion ใช้พลังงานไหม?",a:["ใช้ ATP","ไม่ใช้","ใช้กลูโคส","ใช้เอนไซม์"],c:1},
-{q:"สมดุลการแพร่เรียกว่าอะไร?",a:["osmosis","diffusion","equilibrium","reaction"],c:2},
-{q:"เยื่อเลือกผ่านคืออะไร?",a:["membrane","wall","DNA","protein"],c:0},
-{q:"ATP คืออะไร?",a:["พลังงาน","น้ำ","โปรตีน","ไขมัน"],c:0},
-{q:"เซลล์ใช้พลังงานหลัก?",a:["ATP","DNA","RNA","O2"],c:0},
-{q:"photosynthesis ใช้พลังงานอะไร?",a:["แสง","น้ำ","CO2","ATP"],c:0},
-{q:"หายใจเซลล์ได้อะไร?",a:["ATP","O2","น้ำ","glucose"],c:0}
-];
-
-// shuffle
-function shuffle(arr){
-  for(let i=arr.length-1;i>0;i--){
-    let j=Math.floor(Math.random()* (i+1));
-    [arr[i],arr[j]]=[arr[j],arr[i]];
-  }
+const quiz = [
+{
+question:"การแพร่ (Diffusion) คืออะไร?",
+answers:[
+"การเคลื่อนที่จากเข้มข้นมากไปน้อย",
+"การใช้งาน ATP",
+"การแบ่งเซลล์",
+"การสร้างโปรตีน"
+],
+correct:0,
+explain:"Diffusion เป็นการเคลื่อนที่ของสารจากเข้มข้นสูงไปต่ำ โดยไม่ใช้พลังงาน"
+},
+{
+question:"ออสโมซิสเกี่ยวข้องกับอะไร?",
+answers:["โปรตีน","น้ำ","DNA","ออกซิเจน"],
+correct:1,
+explain:"Osmosis คือการเคลื่อนที่ของน้ำผ่านเยื่อเลือกผ่าน"
+},
+{
+question:"น้ำจะเคลื่อนที่ไปทางใดในการออสโมซิส?",
+answers:[
+"จากสารเข้มข้นมากไปน้อย",
+"จากน้ำมากไปน้ำน้อย",
+"จากน้ำน้อยไปน้ำมาก",
+"สุ่มทิศทาง"
+],
+correct:1,
+explain:"น้ำจะเคลื่อนจากบริเวณที่มีน้ำมากไปน้ำน้อย"
+},
+{
+question:"ภาวะที่อนุภาคเท่ากันทุกบริเวณเรียกว่าอะไร?",
+answers:[
+"การออสโมซิส",
+"การแพร่แบบธรรมดา",
+"ไก่หมกหม้อ",
+"สมดุลการแพร่"
+],
+correct:3,
+explain:"เรียกว่า dynamic equilibrium หรือสมดุลการแพร่"
+},
+{
+question:"การแพร่ใช้พลังงานแบบไหน?",
+answers:["ใช้ ATP","ไม่ใช้พลังงาน","ใช้กลูโคส","ใช้เอนไซม์"],
+correct:1,
+explain:"Diffusion เป็น passive transport ไม่ใช้พลังงาน"
 }
-
-shuffle(allQuiz);
-
-// 10 random questions
-const quiz = allQuiz.slice(0,10);
+];
 
 let i=0;
 let score=0;
-let combo=0;
-let time=10;
+let time=30;
 let timer;
+let locked=false;
 
 function startTimer(){
-  time=10;
-  document.getElementById("fill").style.width="100%";
+  time=30;
+  document.getElementById("timer").innerText="Time: "+time;
 
   timer=setInterval(()=>{
     time--;
     document.getElementById("timer").innerText="Time: "+time;
-    document.getElementById("fill").style.width=(time/10*100)+"%";
 
     if(time<=0){
       clearInterval(timer);
-      failQuestion();
+      fail();
     }
   },1000);
 }
 
-function failQuestion(){
-  combo=0;
-  next();
-}
-
 function load(){
-  clearInterval(timer);
+  locked=false;
+  document.getElementById("nextBtn").style.display="none";
+  document.getElementById("explain").innerText="";
 
   let q=quiz[i];
-  document.getElementById("question").innerText=q.q;
+  document.getElementById("question").innerText=q.question;
   document.getElementById("answers").innerHTML="";
 
   startTimer();
 
-  let mapped=q.a.map((t,idx)=>({t,correct:idx===q.c}))
-  .sort(()=>Math.random()-0.5);
-
-  mapped.forEach(x=>{
+  q.answers.forEach((a,idx)=>{
     let b=document.createElement("button");
-    b.innerText=x.t;
-    b.onclick=()=>{
-      clearInterval(timer);
-
-      if(x.correct){
-        score++;
-        combo++;
-      }else{
-        combo=0;
-      }
-
-      document.getElementById("score").innerText="Score: "+score;
-      document.getElementById("combo").innerText="Combo: "+combo;
-
-      setTimeout(next,500);
-    };
+    b.innerText=a;
+    b.onclick=()=>check(idx);
     document.getElementById("answers").appendChild(b);
   });
 }
 
-function next(){
+function check(idx){
+
+  if(locked) return;
+  locked=true;
+
+  clearInterval(timer); // ⛔ หยุดเวลาเมื่อกดตอบ
+
+  let q=quiz[i];
+  let correctText=q.answers[q.correct];
+
+  if(idx===q.correct){
+    score++;
+    document.getElementById("score").innerText="✅ Correct!";
+    document.getElementById("explain").innerText="✔ ถูกต้อง!\n"+q.explain;
+  }else{
+    document.getElementById("score").innerText="❌ Wrong!";
+    document.getElementById("explain").innerText=
+      "❌ ผิดเพราะคำตอบนี้ไม่ถูกหลักชีวะ\n" +
+      "✔ คำตอบที่ถูกคือ: " + correctText + "\n\n" +
+      q.explain;
+  }
+
+  document.getElementById("nextBtn").style.display="block";
+}
+
+function fail(){
+  locked=true;
+  let q=quiz[i];
+
+  document.getElementById("score").innerText="⏰ Time Out!";
+  document.getElementById("explain").innerText=
+    "❌ หมดเวลา\n✔ คำตอบที่ถูกคือ: " + q.answers[q.correct] + "\n\n" +
+    q.explain;
+
+  document.getElementById("nextBtn").style.display="block";
+}
+
+function nextQuestion(){
   i++;
   if(i<quiz.length){
     load();
   }else{
-    showRank();
+    document.querySelector(".box").innerHTML=
+    `<h1>Finished 🧪</h1>
+     <h2>Score: ${score}/${quiz.length}</h2>`;
   }
-}
-
-function showRank(){
-
-let rank="F";
-
-if(score>=9) rank="S";
-else if(score>=7) rank="A";
-else if(score>=5) rank="B";
-else if(score>=3) rank="C";
-
-document.querySelector(".box").innerHTML=`
-<h1>Finished</h1>
-<h2>Score: ${score}/10</h2>
-<h2>Rank: ${rank}</h2>
-<h3>Combo max: ${combo}</h3>
-`;
 }
 
 load();
