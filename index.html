@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Biology Quiz</title>
 
+<!-- 🌸 FONT -->
 <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
 
 <style>
@@ -13,19 +14,21 @@ html, body{
   height:100%;
   margin:0;
   padding:0;
+
   overflow:hidden;
   touch-action:none;
+
   font-family:'Comic Neue', Arial;
 }
 
-/* BACKGROUND */
+/* 🌌 BACKGROUND */
 body{
   background: radial-gradient(circle at top,#0b1b2b,#07111c,#050b12);
   color:white;
   text-align:center;
 }
 
-/* STAR */
+/* 🌟 STAR */
 .star{
   position:absolute;
   width:2px;
@@ -41,7 +44,7 @@ body{
   to{ transform:translateY(-10vh); }
 }
 
-/* PARTICLE */
+/* 🧪 PARTICLE */
 .particle{
   position:absolute;
   width:6px;
@@ -56,16 +59,21 @@ body{
   100%{ transform:translate(100vw,-10vh); }
 }
 
-/* FLOAT EMOJI */
+/* 🌸 CUTE FLOAT */
 .cute{
   position:absolute;
   font-size:22px;
   opacity:0.7;
-  animation:floatStar 8s linear infinite;
+  animation:floatCute 8s linear infinite;
   pointer-events:none;
 }
 
-/* MENU */
+@keyframes floatCute{
+  0%{ transform:translateY(100vh); }
+  100%{ transform:translateY(-10vh); }
+}
+
+/* 🎮 MENU */
 #menu{
   position:fixed;
   inset:0;
@@ -75,19 +83,23 @@ body{
   align-items:center;
 }
 
-/* BOX */
+/* 🎮 GAME */
 .box{
   display:none;
   width:92%;
   max-width:520px;
   margin:40px auto;
   padding:20px;
+
   background:rgba(27,42,65,0.85);
   backdrop-filter:blur(6px);
   border-radius:20px;
+
+  position:relative;
+  z-index:2;
 }
 
-/* BUTTON */
+/* 💖 BUTTON (kawaii) */
 button{
   width:90%;
   padding:14px;
@@ -96,29 +108,32 @@ button{
   border:none;
   border-radius:14px;
   cursor:pointer;
+
   background: linear-gradient(135deg,#00aaff,#66ffcc);
   color:white;
+
+  box-shadow:0 4px 12px rgba(0,0,0,0.25);
+  transition:0.2s;
 }
 
-/* IMAGE */
-#qImage{
-  width:100%;
-  border-radius:12px;
-  margin:10px 0;
-  display:none;
+button:hover{
+  transform:scale(1.05);
 }
 
+/* TIMER */
 #timer{
   font-size:18px;
   color:#00ffb3;
 }
 
+/* EXPLAIN */
 #explain{
   margin-top:10px;
   color:#bcdcff;
   white-space:pre-line;
 }
 
+/* NEXT */
 #nextBtn{
   display:none;
   width:90%;
@@ -135,15 +150,23 @@ button{
 
 <body>
 
-<!-- BACKGROUND -->
-<div class="star" style="left:10%"></div>
-<div class="star" style="left:30%"></div>
-<div class="star" style="left:50%"></div>
+<!-- 🌟 STAR -->
+<div class="star" style="left:10%; animation-duration:7s;"></div>
+<div class="star" style="left:25%; animation-duration:9s;"></div>
+<div class="star" style="left:40%; animation-duration:6s;"></div>
+<div class="star" style="left:60%; animation-duration:10s;"></div>
+<div class="star" style="left:80%; animation-duration:8s;"></div>
 
-<div class="particle" style="left:20%"></div>
+<!-- 🧪 PARTICLE -->
+<div class="particle" style="left:20%;"></div>
+<div class="particle" style="left:50%; animation-duration:15s;"></div>
+<div class="particle" style="left:70%; animation-duration:11s;"></div>
 
+<!-- 🌸 CUTE EMOJI -->
 <div class="cute">🧬</div>
+<div class="cute">🧫</div>
 <div class="cute">🧪</div>
+<div class="cute">✨</div>
 <div class="cute">🌿</div>
 
 <!-- MENU -->
@@ -156,9 +179,6 @@ button{
 <div class="box" id="game">
 
 <h2 id="question">Loading...</h2>
-
-<img id="qImage">
-
 <div id="timer">Time: 30</div>
 
 <div id="answers"></div>
@@ -175,7 +195,6 @@ button{
 const quiz = [
 {
 question:"การแพร่ (Diffusion) คืออะไร?",
-image:"",
 answers:[
 "การเคลื่อนที่จากเข้มข้นมากไปน้อย",
 "การใช้งาน ATP",
@@ -183,15 +202,41 @@ answers:[
 "การสร้างโปรตีน"
 ],
 correct:0,
-explain:"Diffusion คือการเคลื่อนที่ของสารจากเข้มข้นสูงไปต่ำ"
+explain:"Diffusion คือการเคลื่อนที่ของสารจากเข้มข้นสูงไปต่ำ โดยไม่ใช้พลังงาน"
 },
-
 {
 question:"ออสโมซิสเกี่ยวข้องกับอะไร?",
-image:"https://media.discordapp.net/attachments/1276889260112482366/1504439532119130262/166_20260513162356.png",
 answers:["โปรตีน","น้ำ","DNA","ออกซิเจน"],
 correct:1,
 explain:"Osmosis คือการเคลื่อนที่ของน้ำผ่านเยื่อเลือกผ่าน"
+},
+{
+question:"น้ำจะเคลื่อนที่ไปทางใดในการออสโมซิส?",
+answers:[
+"จากสารเข้มข้นมากไปน้อย",
+"จากน้ำมากไปน้ำน้อย",
+"จากน้ำน้อยไปน้ำมาก",
+"สุ่มทิศทาง"
+],
+correct:1,
+explain:"น้ำจะเคลื่อนจากบริเวณที่มีน้ำมากไปน้ำน้อย"
+},
+{
+question:"ภาวะที่อนุภาคเท่ากันทุกบริเวณเรียกว่าอะไร?",
+answers:[
+"การออสโมซิส",
+"การแพร่แบบธรรมดา",
+"ไก่หมกหม้อ",
+"สมดุลการแพร่"
+],
+correct:3,
+explain:"เรียกว่า dynamic equilibrium หรือสมดุลการแพร่"
+},
+{
+question:"การแพร่ใช้พลังงานแบบไหน?",
+answers:["ใช้ ATP","ไม่ใช้พลังงาน","ใช้กลูโคส","ใช้เอนไซม์"],
+correct:1,
+explain:"Diffusion เป็น passive transport ไม่ใช้พลังงาน"
 }
 ];
 
@@ -229,18 +274,7 @@ function load(){
   document.getElementById("explain").innerText="";
 
   let q=quiz[i];
-
   document.getElementById("question").innerText=q.question;
-
-  let img=document.getElementById("qImage");
-
-  if(q.image){
-    img.src=q.image;
-    img.style.display="block";
-  }else{
-    img.style.display="none";
-  }
-
   document.getElementById("answers").innerHTML="";
 
   startTimer();
