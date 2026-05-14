@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Biology Quiz</title>
 
+<!-- 🌸 FONT -->
+<link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+
 <style>
 
 html, body{
@@ -12,10 +15,10 @@ html, body{
   margin:0;
   padding:0;
 
-  overflow:hidden;              /* 🔒 ล็อก scroll ทั้งหมด */
-  touch-action:none;           /* 🔒 กัน swipe มือถือ */
+  overflow:hidden;
+  touch-action:none;
 
-  font-family:Arial;
+  font-family:'Comic Neue', Arial;
 }
 
 /* 🌌 BACKGROUND */
@@ -56,6 +59,20 @@ body{
   100%{ transform:translate(100vw,-10vh); }
 }
 
+/* 🌸 CUTE FLOAT */
+.cute{
+  position:absolute;
+  font-size:22px;
+  opacity:0.7;
+  animation:floatCute 8s linear infinite;
+  pointer-events:none;
+}
+
+@keyframes floatCute{
+  0%{ transform:translateY(100vh); }
+  100%{ transform:translateY(-10vh); }
+}
+
 /* 🎮 MENU */
 #menu{
   position:fixed;
@@ -66,7 +83,7 @@ body{
   align-items:center;
 }
 
-/* 🎮 GAME BOX */
+/* 🎮 GAME */
 .box{
   display:none;
   width:92%;
@@ -82,29 +99,41 @@ body{
   z-index:2;
 }
 
+/* 💖 BUTTON (kawaii) */
 button{
   width:90%;
   padding:14px;
   margin:8px;
   font-size:16px;
   border:none;
-  border-radius:10px;
+  border-radius:14px;
   cursor:pointer;
-  background:#00aaff;
+
+  background: linear-gradient(135deg,#00aaff,#66ffcc);
   color:white;
+
+  box-shadow:0 4px 12px rgba(0,0,0,0.25);
+  transition:0.2s;
 }
 
+button:hover{
+  transform:scale(1.05);
+}
+
+/* TIMER */
 #timer{
   font-size:18px;
   color:#00ffb3;
 }
 
+/* EXPLAIN */
 #explain{
   margin-top:10px;
   color:#bcdcff;
   white-space:pre-line;
 }
 
+/* NEXT */
 #nextBtn{
   display:none;
   width:90%;
@@ -132,6 +161,13 @@ button{
 <div class="particle" style="left:20%;"></div>
 <div class="particle" style="left:50%; animation-duration:15s;"></div>
 <div class="particle" style="left:70%; animation-duration:11s;"></div>
+
+<!-- 🌸 CUTE EMOJI -->
+<div class="cute">🧬</div>
+<div class="cute">🧫</div>
+<div class="cute">🧪</div>
+<div class="cute">✨</div>
+<div class="cute">🌿</div>
 
 <!-- MENU -->
 <div id="menu">
