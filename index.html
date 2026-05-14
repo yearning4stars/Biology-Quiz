@@ -262,6 +262,8 @@ explain:"Diffusion เป็น passive transport ไม่ใช้พลัง
 }
 ];
 
+shuffle(quiz);
+
 let i=0;
 let score=0;
 let time=30;
@@ -301,7 +303,24 @@ function load(){
 
   startTimer();
 
-  q.answers.forEach((a,idx)=>{
+let shuffledAnswers = q.answers
+  .map((a, idx) => ({
+    text:a,
+    correct: idx === q.correct
+  }))
+  .sort(() => Math.random() - 0.5);
+
+shuffledAnswers.forEach(a=>{
+
+  let b=document.createElement("button");
+
+  b.innerText=a.text;
+
+  b.onclick=()=>check(a.correct);
+
+  document.getElementById("answers").appendChild(b);
+
+});
     let b=document.createElement("button");
     b.innerText=a;
     b.onclick=()=>check(idx);
@@ -309,7 +328,7 @@ function load(){
   });
 }
 
-function check(idx){
+function check(isCorrect){
 
   if(locked) return;
   locked=true;
@@ -319,7 +338,7 @@ function check(idx){
   let q=quiz[i];
   let correctText=q.answers[q.correct];
 
-  if(idx===q.correct){
+if(isCorrect){
     score++;
     document.getElementById("score").innerText="Score: "+score;
     document.getElementById("explain").innerText="✔ ถูกต้อง\n"+q.explain;
@@ -377,6 +396,13 @@ document.querySelectorAll(".star").forEach(s => {
   s.style.animationDuration = (6 + Math.random() * 8) + "s";
   s.style.opacity = Math.random() * 0.8;
 });
+
+function shuffle(array){
+  for(let i = array.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
   
 </script>
 
