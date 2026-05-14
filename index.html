@@ -329,7 +329,33 @@ function nextQuestion(){
     `<h1>Finished 🧪</h1><h2>Score: ${score}/${quiz.length}</h2>`;
   }
 }
+  document.querySelectorAll(".cute").forEach(el => {
+  el.style.left = Math.random() * 100 + "vw";
+  el.style.animationDuration = (6 + Math.random() * 6) + "s";
+  el.style.opacity = Math.random() * 0.6 + 0.2;
+  el.style.fontSize = (18 + Math.random() * 20) + "px";
+});
+  document.querySelectorAll(".particle").forEach(p => {
+  p.style.left = Math.random() * 100 + "vw";
+  p.style.animationDuration = (10 + Math.random() * 10) + "s";
+});
 
+document.querySelectorAll(".star").forEach(s => {
+  s.style.left = Math.random() * 100 + "vw";
+  s.style.animationDuration = (6 + Math.random() * 8) + "s";
+  s.style.opacity = Math.random() * 0.8;
+});
+  document.querySelectorAll(".particle").forEach(p => {
+  p.style.left = Math.random() * 100 + "vw";
+  p.style.animationDuration = (10 + Math.random() * 10) + "s";
+});
+
+document.querySelectorAll(".star").forEach(s => {
+  s.style.left = Math.random() * 100 + "vw";
+  s.style.animationDuration = (6 + Math.random() * 8) + "s";
+  s.style.opacity = Math.random() * 0.8;
+});
+  
 </script>
 
 </body>
