@@ -15,8 +15,8 @@ html, body{
   margin:0;
   padding:0;
 
-  overflow:hidden;
-  touch-action:none;
+  overflow-x:hidden;
+  overflow-y:auto;
 
   font-family:'Comic Neue', Arial;
 }
@@ -26,6 +26,7 @@ body{
   background: radial-gradient(circle at top,#0b1b2b,#07111c,#050b12);
   color:white;
   text-align:center;
+  position:relative;
 }
 
 /* 🌟 STAR */
@@ -36,12 +37,16 @@ body{
   background:white;
   border-radius:50%;
   opacity:0.7;
-  animation:floatStar 10s linear infinite;
+  animation:floatStar linear infinite;
 }
 
 @keyframes floatStar{
-  from{ transform:translateY(100vh); }
-  to{ transform:translateY(-10vh); }
+  from{
+    transform:translateY(110vh);
+  }
+  to{
+    transform:translateY(-20vh);
+  }
 }
 
 /* 🧪 PARTICLE */
@@ -51,26 +56,33 @@ body{
   height:6px;
   background:rgba(0,200,255,0.35);
   border-radius:50%;
-  animation:move 14s linear infinite;
+  animation:move linear infinite;
 }
 
 @keyframes move{
-  0%{ transform:translate(0,100vh); }
-  100%{ transform:translate(100vw,-10vh); }
+  0%{
+    transform:translate(0,100vh);
+  }
+  100%{
+    transform:translate(100vw,-10vh);
+  }
 }
 
 /* 🌸 CUTE FLOAT */
 .cute{
   position:absolute;
-  font-size:22px;
-  opacity:0.7;
-  animation:floatCute 8s linear infinite;
+  animation:floatCute linear infinite;
   pointer-events:none;
+  user-select:none;
 }
 
 @keyframes floatCute{
-  0%{ transform:translateY(100vh); }
-  100%{ transform:translateY(-10vh); }
+  from{
+    transform:translateY(110vh) rotate(0deg);
+  }
+  to{
+    transform:translateY(-20vh) rotate(360deg);
+  }
 }
 
 /* 🎮 MENU */
@@ -81,49 +93,100 @@ body{
   flex-direction:column;
   justify-content:center;
   align-items:center;
+  z-index:5;
+}
+
+/* 🌸 TITLE */
+#menu h1{
+  font-size:42px;
+  margin-bottom:10px;
+  text-shadow:0 0 20px cyan;
+}
+
+#menu p{
+  opacity:0.8;
+  margin-bottom:20px;
 }
 
 /* 🎮 GAME */
 .box{
   display:none;
+
   width:92%;
   max-width:520px;
+
   margin:40px auto;
   padding:20px;
 
   background:rgba(27,42,65,0.85);
   backdrop-filter:blur(6px);
-  border-radius:20px;
+
+  border-radius:24px;
 
   position:relative;
   z-index:2;
+
+  box-shadow:0 0 25px rgba(0,255,255,0.15);
 }
 
-/* 💖 BUTTON (kawaii) */
+/* 💖 BUTTON */
 button{
   width:90%;
   padding:14px;
   margin:8px;
+
   font-size:16px;
+  font-family:'Comic Neue', Arial;
+
   border:none;
-  border-radius:14px;
+  border-radius:16px;
+
   cursor:pointer;
 
   background: linear-gradient(135deg,#00aaff,#66ffcc);
   color:white;
 
   box-shadow:0 4px 12px rgba(0,0,0,0.25);
+
   transition:0.2s;
 }
 
 button:hover{
   transform:scale(1.05);
+  box-shadow:0 0 20px cyan;
+}
+
+/* QUESTION */
+#question{
+  font-size:24px;
+  margin-bottom:12px;
+}
+
+/* IMAGE */
+#questionImage{
+  width:100%;
+  max-width:300px;
+
+  border-radius:18px;
+
+  margin:10px auto 20px auto;
+
+  display:none;
+
+  box-shadow:0 0 20px rgba(255,255,255,0.15);
 }
 
 /* TIMER */
 #timer{
-  font-size:18px;
+  font-size:20px;
   color:#00ffb3;
+  margin-bottom:10px;
+}
+
+/* SCORE */
+#score{
+  font-size:18px;
+  margin-top:15px;
 }
 
 /* EXPLAIN */
@@ -139,10 +202,10 @@ button:hover{
   width:90%;
   padding:12px;
   margin-top:10px;
+
   background:#00ffb3;
   color:black;
   font-weight:bold;
-  border-radius:10px;
 }
 
 </style>
@@ -151,16 +214,19 @@ button:hover{
 <body>
 
 <!-- 🌟 STAR -->
-<div class="star" style="left:10%; animation-duration:7s;"></div>
-<div class="star" style="left:25%; animation-duration:9s;"></div>
-<div class="star" style="left:40%; animation-duration:6s;"></div>
-<div class="star" style="left:60%; animation-duration:10s;"></div>
-<div class="star" style="left:80%; animation-duration:8s;"></div>
+<div class="star"></div>
+<div class="star"></div>
+<div class="star"></div>
+<div class="star"></div>
+<div class="star"></div>
+<div class="star"></div>
+<div class="star"></div>
 
 <!-- 🧪 PARTICLE -->
-<div class="particle" style="left:20%;"></div>
-<div class="particle" style="left:50%; animation-duration:15s;"></div>
-<div class="particle" style="left:70%; animation-duration:11s;"></div>
+<div class="particle"></div>
+<div class="particle"></div>
+<div class="particle"></div>
+<div class="particle"></div>
 
 <!-- 🌸 CUTE EMOJI -->
 <div class="cute">🧬</div>
@@ -168,10 +234,15 @@ button:hover{
 <div class="cute">🧪</div>
 <div class="cute">✨</div>
 <div class="cute">🌿</div>
+<div class="cute">💖</div>
+<div class="cute">🐣</div>
+<div class="cute">☁️</div>
 
 <!-- MENU -->
 <div id="menu">
   <h1>🧪 Biology Quiz</h1>
+  <p>cute science time ✨</p>
+
   <button onclick="startGame()">▶ Start</button>
 </div>
 
@@ -179,6 +250,9 @@ button:hover{
 <div class="box" id="game">
 
 <h2 id="question">Loading...</h2>
+
+<img id="questionImage">
+
 <div id="timer">Time: 30</div>
 
 <div id="answers"></div>
@@ -192,9 +266,12 @@ button:hover{
 
 <script>
 
+/* 🌸 RANDOM QUESTION ORDER */
 const quiz = [
+
 {
 question:"การแพร่ คืออะไร?",
+image:"",
 answers:[
 "การเคลื่อนที่จากเข้มข้นมากไปน้อย",
 "การใช้งาน ATP",
@@ -204,8 +281,10 @@ answers:[
 correct:0,
 explain:"การแพร่ คือการเคลื่อนที่ของสารจากเข้มข้นสูงไปต่ำ โดยไม่ใช้พลังงาน"
 },
+
 {
-question:"ข้อใดไม่ใช่*การลำเลียงผ่านเยื่อหุ้มเซลล์โดยตรง?",
+question:"ข้อใดไม่ใช่การลำเลียงผ่านเยื่อหุ้มเซลล์โดยตรง?",
+image:"",
 answers:[
 "Diffusion",
 "Active transport",
@@ -213,10 +292,12 @@ answers:[
 "Digestion"
 ],
 correct:3,
-explain:"Digestion (การย่อยอาหาร) ไม่ใช่การลำเลียงผ่านเยื่อหุ้มเซลล์โดยตรง"
+explain:"Digestion ไม่ใช่การลำเลียงผ่านเยื่อหุ้มเซลล์โดยตรง"
 },
+
 {
 question:"ข้อใดเป็นตัวอย่างของการแพร่?",
+image:"",
 answers:[
 "น้ำเข้าสู่รากพืช",
 "ออกซิเจนเข้าสู่เซลล์",
@@ -224,45 +305,39 @@ answers:[
 "ไก่หมกหม้อขับของเสียออก"
 ],
 correct:1,
-explain:"ออกซิเจนเข้าสู่เซลล์เป็นการแพร่แบบธรรมดา โดยไม่อาศัยพลังงาน"
+explain:"ออกซิเจนเข้าสู่เซลล์เป็นการแพร่แบบธรรมดา"
 },
+
+{
+question:"ภาพนี้เกี่ยวข้องกับอะไร?",
+image:"https://media.discordapp.net/attachments/1276889260112482366/1504439532119130262/166_20260513162356.png?ex=6a06fdff&is=6a05ac7f&hm=b30716230fb98514a614b287014fdd774a299269ad22e77082e748fbeea58c7f&=&format=webp&quality=lossless&width=779&height=779",
+answers:[
+"การสังเคราะห์แสง",
+"ออสโมซิส",
+"การแพร่",
+"ไมโทซิส"
+],
+correct:2,
+explain:"ภาพนี้แสดงตัวอย่างเกี่ยวกับการแพร่"
+},
+
 {
 question:"ออสโมซิสเกี่ยวข้องกับอะไร?",
-answers:["โปรตีน","น้ำ","DNA","ออกซิเจน"],
+image:"",
+answers:[
+"โปรตีน",
+"น้ำ",
+"DNA",
+"ออกซิเจน"
+],
 correct:1,
 explain:"Osmosis คือการเคลื่อนที่ของน้ำผ่านเยื่อเลือกผ่าน"
-},
-{
-question:"น้ำจะเคลื่อนที่ไปทางใดในการออสโมซิส?",
-answers:[
-"จากสารเข้มข้นมากไปน้อย",
-"จากน้ำมากไปน้ำน้อย",
-"จากน้ำน้อยไปน้ำมาก",
-"สุ่มทิศทาง"
-],
-correct:1,
-explain:"น้ำจะเคลื่อนจากบริเวณที่มีน้ำมากไปน้ำน้อย"
-},
-{
-question:"ภาวะที่อนุภาคเท่ากันทุกบริเวณเรียกว่าอะไร?",
-answers:[
-"การออสโมซิส",
-"การแพร่แบบธรรมดา",
-"ไก่หมกหม้อ",
-"สมดุลการแพร่"
-],
-correct:3,
-explain:"เรียกว่า dynamic equilibrium หรือสมดุลการแพร่"
-},
-{
-question:"การแพร่ใช้พลังงานแบบไหน?",
-answers:["ใช้ ATP","ไม่ใช้พลังงาน","ใช้กลูโคส","ใช้เอนไซม์"],
-correct:1,
-explain:"Diffusion เป็น passive transport ไม่ใช้พลังงาน"
 }
+
 ];
 
-shuffle(quiz);
+/* 🌸 SHUFFLE QUESTION */
+quiz.sort(()=>Math.random()-0.5);
 
 let i=0;
 let score=0;
@@ -271,139 +346,193 @@ let timer;
 let locked=false;
 
 function startGame(){
+
   document.getElementById("menu").style.display="none";
   document.getElementById("game").style.display="block";
+
   load();
 }
 
 function startTimer(){
+
   time=30;
-  document.getElementById("timer").innerText="Time: "+time;
+
+  document.getElementById("timer").innerText="⏰ Time: "+time;
 
   timer=setInterval(()=>{
+
     time--;
-    document.getElementById("timer").innerText="Time: "+time;
+
+    document.getElementById("timer").innerText="⏰ Time: "+time;
 
     if(time<=0){
+
       clearInterval(timer);
+
       fail();
     }
+
   },1000);
 }
 
 function load(){
 
   locked=false;
+
   document.getElementById("nextBtn").style.display="none";
+
   document.getElementById("explain").innerText="";
 
   let q=quiz[i];
+
   document.getElementById("question").innerText=q.question;
+
+  /* 🌸 IMAGE */
+  const img=document.getElementById("questionImage");
+
+  if(q.image){
+
+    img.src=q.image;
+    img.style.display="block";
+
+  }else{
+
+    img.style.display="none";
+  }
+
   document.getElementById("answers").innerHTML="";
 
   startTimer();
 
-let shuffledAnswers = q.answers
-  .map((a, idx) => ({
+  /* 🌸 RANDOM ANSWERS */
+  let shuffled=q.answers.map((a,index)=>({
     text:a,
-    correct: idx === q.correct
-  }))
-  .sort(() => Math.random() - 0.5);
+    correct:index===q.correct
+  }));
 
-shuffledAnswers.forEach(a=>{
+  shuffled.sort(()=>Math.random()-0.5);
 
-  let b=document.createElement("button");
+  shuffled.forEach(choice=>{
 
-  b.innerText=a.text;
-
-  b.onclick=()=>check(a.correct);
-
-  document.getElementById("answers").appendChild(b);
-
-});
     let b=document.createElement("button");
-    b.innerText=a;
-    b.onclick=()=>check(idx);
+
+    b.innerText=choice.text;
+
+    b.onclick=()=>check(choice.correct, q);
+
     document.getElementById("answers").appendChild(b);
+
   });
 }
 
-function check(isCorrect){
+function check(isCorrect, q){
 
   if(locked) return;
+
   locked=true;
 
   clearInterval(timer);
 
-  let q=quiz[i];
   let correctText=q.answers[q.correct];
 
-if(isCorrect){
+  if(isCorrect){
+
     score++;
-    document.getElementById("score").innerText="Score: "+score;
-    document.getElementById("explain").innerText="✔ ถูกต้อง\n"+q.explain;
-  }else{
-    document.getElementById("score").innerText="Score: "+score;
+
+    document.getElementById("score").innerText="🌸 Score: "+score;
+
     document.getElementById("explain").innerText=
-      "❌ ผิด\nคำตอบที่ถูก: "+correctText+"\n\n"+q.explain;
+    "✔ ถูกต้อง ✨\n\n"+q.explain;
+
+  }else{
+
+    document.getElementById("score").innerText="🌸 Score: "+score;
+
+    document.getElementById("explain").innerText=
+    "❌ ผิด\n\n✔ คำตอบที่ถูก: "
+    + correctText +
+    "\n\n" +
+    q.explain;
   }
 
   document.getElementById("nextBtn").style.display="block";
 }
 
 function fail(){
+
   locked=true;
+
   let q=quiz[i];
 
   document.getElementById("explain").innerText=
-    "⏰ หมดเวลา\nคำตอบที่ถูก: "+q.answers[q.correct]+"\n\n"+q.explain;
+  "⏰ หมดเวลา\n\n✔ คำตอบที่ถูก: "
+  + q.answers[q.correct] +
+  "\n\n" +
+  q.explain;
 
   document.getElementById("nextBtn").style.display="block";
 }
 
 function nextQuestion(){
+
   i++;
+
   if(i<quiz.length){
+
     load();
+
   }else{
+
     document.getElementById("game").innerHTML=
-    `<h1>Finished 🧪</h1><h2>Score: ${score}/${quiz.length}</h2>`;
+    `
+    <h1>🎉 Finished!</h1>
+    <h2>🌸 Score: ${score}/${quiz.length}</h2>
+    <p>good job scientist ✨</p>
+    `;
   }
 }
-  document.querySelectorAll(".cute").forEach(el => {
-  el.style.left = Math.random() * 100 + "vw";
-  el.style.animationDuration = (6 + Math.random() * 6) + "s";
-  el.style.opacity = Math.random() * 0.6 + 0.2;
-  el.style.fontSize = (18 + Math.random() * 20) + "px";
-});
-  document.querySelectorAll(".particle").forEach(p => {
-  p.style.left = Math.random() * 100 + "vw";
-  p.style.animationDuration = (10 + Math.random() * 10) + "s";
+
+/* 🌸 RANDOM FLOATING EMOJI */
+document.querySelectorAll(".cute").forEach(el => {
+
+  el.style.left = Math.random()*100 + "vw";
+
+  el.style.animationDuration =
+  (6 + Math.random()*6) + "s";
+
+  el.style.opacity =
+  Math.random()*0.6 + 0.2;
+
+  el.style.fontSize =
+  (18 + Math.random()*20) + "px";
+
 });
 
+/* 🌟 RANDOM STAR */
 document.querySelectorAll(".star").forEach(s => {
-  s.style.left = Math.random() * 100 + "vw";
-  s.style.animationDuration = (6 + Math.random() * 8) + "s";
-  s.style.opacity = Math.random() * 0.8;
-});
-  document.querySelectorAll(".particle").forEach(p => {
-  p.style.left = Math.random() * 100 + "vw";
-  p.style.animationDuration = (10 + Math.random() * 10) + "s";
+
+  s.style.left =
+  Math.random()*100 + "vw";
+
+  s.style.animationDuration =
+  (6 + Math.random()*8) + "s";
+
+  s.style.opacity =
+  Math.random()*0.8;
+
 });
 
-document.querySelectorAll(".star").forEach(s => {
-  s.style.left = Math.random() * 100 + "vw";
-  s.style.animationDuration = (6 + Math.random() * 8) + "s";
-  s.style.opacity = Math.random() * 0.8;
+/* 🧪 RANDOM PARTICLE */
+document.querySelectorAll(".particle").forEach(p => {
+
+  p.style.left =
+  Math.random()*100 + "vw";
+
+  p.style.animationDuration =
+  (10 + Math.random()*10) + "s";
+
 });
 
-function shuffle(array){
-  for(let i = array.length - 1; i > 0; i--){
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-}
-  
 </script>
 
 </body>
