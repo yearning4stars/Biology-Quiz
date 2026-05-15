@@ -390,15 +390,23 @@ function load(){
   /* 🌸 IMAGE */
   const img=document.getElementById("questionImage");
 
-  if(q.image){
+if(q.image){
 
-    img.src=q.image;
-    img.style.display="block";
+  img.style.display = "none";
 
-  }else{
+  const preload = new Image();
 
-    img.style.display="none";
-  }
+  preload.onload = () => {
+    img.src = q.image;
+    img.style.display = "block";
+  };
+
+  preload.src = q.image;
+
+}else{
+
+  img.style.display = "none";
+}
 
   document.getElementById("answers").innerHTML="";
 
