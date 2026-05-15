@@ -266,6 +266,11 @@ button:hover{
 
 <script>
 
+const sfxCorrect = new Audio("correct.wav");
+const sfxWrong = new Audio("wrong.wav");
+const sfxClick = new Audio("click.wav");
+const sfxFinish = new Audio("finish.wav");
+
 /* 🌸 RANDOM QUESTION ORDER */
 const quiz = [
 
@@ -347,6 +352,8 @@ let locked=false;
 
 function startGame(){
 
+  sfxClick.play();
+
   document.getElementById("menu").style.display="none";
   document.getElementById("game").style.display="block";
 
@@ -390,15 +397,15 @@ function load(){
   /* 🌸 IMAGE */
   const img=document.getElementById("questionImage");
 
-if(q.image){
+  if(q.image){
 
-  img.src=q.image;
-  img.style.display="block";
+    img.src=q.image;
+    img.style.display="block";
 
-}else{
+  }else{
 
-  img.style.display="none";
-}
+    img.style.display="none";
+  }
 
   document.getElementById("answers").innerHTML="";
 
@@ -437,6 +444,8 @@ function check(isCorrect, q){
 
   if(isCorrect){
 
+    sfxCorrect.play();
+
     score++;
 
     document.getElementById("score").innerText="🌸 Score: "+score;
@@ -445,6 +454,8 @@ function check(isCorrect, q){
     "✔ ถูกต้อง ✨\n\n"+q.explain;
 
   }else{
+
+    sfxWrong.play();
 
     document.getElementById("score").innerText="🌸 Score: "+score;
 
@@ -459,6 +470,8 @@ function check(isCorrect, q){
 }
 
 function fail(){
+
+  sfxWrong.play();
 
   locked=true;
 
@@ -475,6 +488,8 @@ function fail(){
 
 function nextQuestion(){
 
+  sfxClick.play();
+
   i++;
 
   if(i<quiz.length){
@@ -482,6 +497,8 @@ function nextQuestion(){
     load();
 
   }else{
+
+    sfxFinish.play();
 
     document.getElementById("game").innerHTML=
     `
