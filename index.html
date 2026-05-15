@@ -392,20 +392,12 @@ function load(){
 
 if(q.image){
 
-  img.style.display = "none";
-
-  const preload = new Image();
-
-  preload.onload = () => {
-    img.src = q.image;
-    img.style.display = "block";
-  };
-
-  preload.src = q.image;
+  img.src=q.image;
+  img.style.display="block";
 
 }else{
 
-  img.style.display = "none";
+  img.style.display="none";
 }
 
   document.getElementById("answers").innerHTML="";
