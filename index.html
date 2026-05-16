@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Biology Quiz</title>
 
+<!-- 🌸 FONT -->
 <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
 
 <style>
@@ -13,58 +14,198 @@ html, body{
   height:100%;
   margin:0;
   padding:0;
+
   overflow-x:hidden;
   overflow-y:auto;
+
   font-family:'Comic Neue', Arial;
 }
 
+/* 🌌 BACKGROUND */
 body{
   background: radial-gradient(circle at top,#0b1b2b,#07111c,#050b12);
   color:white;
   text-align:center;
+  position:relative;
 }
 
-/* BOX */
+/* 🌟 STAR */
+.star{
+  position:absolute;
+  width:2px;
+  height:2px;
+  background:white;
+  border-radius:50%;
+  opacity:0.7;
+  animation:floatStar linear infinite;
+}
+
+@keyframes floatStar{
+  from{
+    transform:translateY(110vh);
+  }
+  to{
+    transform:translateY(-20vh);
+  }
+}
+
+/* 🧪 PARTICLE */
+.particle{
+  position:absolute;
+  width:6px;
+  height:6px;
+  background:rgba(0,200,255,0.35);
+  border-radius:50%;
+  animation:move linear infinite;
+}
+
+@keyframes move{
+  0%{
+    transform:translate(0,100vh);
+  }
+  100%{
+    transform:translate(100vw,-10vh);
+  }
+}
+
+/* 🌸 CUTE FLOAT */
+.cute{
+  position:absolute;
+  animation:floatCute linear infinite;
+  pointer-events:none;
+  user-select:none;
+}
+
+@keyframes floatCute{
+  from{
+    transform:translateY(110vh) rotate(0deg);
+  }
+  to{
+    transform:translateY(-20vh) rotate(360deg);
+  }
+}
+
+/* 🎮 MENU */
+#menu{
+  position:fixed;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  z-index:5;
+}
+
+/* 🌸 TITLE */
+#menu h1{
+  font-size:42px;
+  margin-bottom:10px;
+  text-shadow:0 0 20px cyan;
+}
+
+#menu p{
+  opacity:0.8;
+  margin-bottom:20px;
+}
+
+/* 🎮 GAME */
 .box{
   display:none;
+
   width:92%;
   max-width:520px;
+
   margin:40px auto;
   padding:20px;
+
   background:rgba(27,42,65,0.85);
+  backdrop-filter:blur(6px);
+
   border-radius:24px;
+
+  position:relative;
+  z-index:2;
+
+  box-shadow:0 0 25px rgba(0,255,255,0.15);
 }
 
-/* BUTTON */
+/* 💖 BUTTON */
 button{
   width:90%;
   padding:14px;
   margin:8px;
+
   font-size:16px;
   font-family:'Comic Neue', Arial;
+
   border:none;
   border-radius:16px;
+
   cursor:pointer;
+
   background: linear-gradient(135deg,#00aaff,#66ffcc);
   color:white;
+
+  box-shadow:0 4px 12px rgba(0,0,0,0.25);
+
+  transition:0.2s;
 }
 
-#hintBtn{
-  background: linear-gradient(135deg,#ffcc00,#ff66aa);
-  color:black;
+button:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 20px cyan;
 }
 
-#nextBtn{
+/* QUESTION */
+#question{
+  font-size:24px;
+  margin-bottom:12px;
+}
+
+/* IMAGE */
+#questionImage{
+  width:100%;
+  max-width:300px;
+
+  border-radius:18px;
+
+  margin:10px auto 20px auto;
+
   display:none;
-  background:#00ffb3;
-  color:black;
-  font-weight:bold;
+
+  box-shadow:0 0 20px rgba(255,255,255,0.15);
 }
 
 /* TIMER */
 #timer{
   font-size:20px;
   color:#00ffb3;
+  margin-bottom:10px;
+}
+
+/* SCORE */
+#score{
+  font-size:18px;
+  margin-top:15px;
+}
+
+/* EXPLAIN */
+#explain{
+  margin-top:10px;
+  color:#bcdcff;
+  white-space:pre-line;
+}
+
+/* NEXT */
+#nextBtn{
+  display:none;
+  width:90%;
+  padding:12px;
+  margin-top:10px;
+
+  background:#00ffb3;
+  color:black;
+  font-weight:bold;
 }
 
 </style>
@@ -72,34 +213,70 @@ button{
 
 <body>
 
+<!-- 🌟 STAR -->
+<div class="star"></div>
+<div class="star"></div>
+<div class="star"></div>
+<div class="star"></div>
+<div class="star"></div>
+<div class="star"></div>
+<div class="star"></div>
+
+<!-- 🧪 PARTICLE -->
+<div class="particle"></div>
+<div class="particle"></div>
+<div class="particle"></div>
+<div class="particle"></div>
+
+<!-- 🌸 CUTE EMOJI -->
+<div class="cute">🧬</div>
+<div class="cute">🧫</div>
+<div class="cute">🧪</div>
+<div class="cute">✨</div>
+<div class="cute">🌿</div>
+<div class="cute">💖</div>
+<div class="cute">🐣</div>
+<div class="cute">☁️</div>
+
 <!-- MENU -->
 <div id="menu">
   <h1>🧪 Biology Quiz</h1>
+  <p>cute science time ✨</p>
+
   <button onclick="startGame()">▶ Start</button>
 </div>
 
 <!-- GAME -->
 <div class="box" id="game">
 
-<h2 id="question"></h2>
+<h2 id="question">Loading...</h2>
 
-<div id="timer">⏰ Time: 30</div>
+<img id="questionImage">
+
+<div id="timer">Time: 30</div>
 
 <div id="answers"></div>
 
 <p id="score">Score: 0</p>
 <p id="explain"></p>
 
-<button id="hintBtn" onclick="useHint()">💡 Hint (50/50)</button>
 <button id="nextBtn" onclick="nextQuestion()">Next ➜</button>
 
 </div>
 
 <script>
 
+const sfxCorrect = new Audio("correct.wav");
+const sfxWrong = new Audio("wrong.wav");
+const sfxClick = new Audio("click.wav");
+const sfxFinish = new Audio("finish.wav");
+
+/* 🌸 RANDOM QUESTION ORDER */
 const quiz = [
+
 {
 question:"การแพร่ คืออะไร?",
+image:"",
 answers:[
 "การเคลื่อนที่จากเข้มข้นมากไปน้อย",
 "การใช้งาน ATP",
@@ -107,21 +284,51 @@ answers:[
 "การสร้างโปรตีน"
 ],
 correct:0,
-explain:"การแพร่ คือการเคลื่อนที่ของสารจากเข้มข้นสูงไปต่ำ"
+explain:"การแพร่ คือการเคลื่อนที่ของสารจากเข้มข้นสูงไปต่ำ โดยไม่ใช้พลังงาน"
 },
+
+{
+question:"ข้อใดไม่ใช่การลำเลียงผ่านเยื่อหุ้มเซลล์โดยตรง?",
+image:"",
+answers:[
+"Diffusion",
+"Active transport",
+"Passive transport",
+"Digestion"
+],
+correct:3,
+explain:"Digestion ไม่ใช่การลำเลียงผ่านเยื่อหุ้มเซลล์โดยตรง"
+},
+
 {
 question:"ข้อใดเป็นตัวอย่างของการแพร่?",
+image:"",
 answers:[
 "น้ำเข้าสู่รากพืช",
 "ออกซิเจนเข้าสู่เซลล์",
 "เม็ดเลือดขาวกินเชื้อโรค",
-"การย่อยอาหาร"
+"ไก่หมกหม้อขับของเสียออก"
 ],
 correct:1,
-explain:"ออกซิเจนเข้าสู่เซลล์เป็นการแพร่"
+explain:"ออกซิเจนเข้าสู่เซลล์เป็นการแพร่แบบธรรมดา"
 },
+
+{
+question:"ภาพนี้เกี่ยวข้องกับอะไร?",
+image:"trustmethisisAi2.png",
+answers:[
+"การสังเคราะห์แสง",
+"ออสโมซิส",
+"การแพร่",
+"ไมโทซิส"
+],
+correct:2,
+explain:"ภาพนี้แสดงตัวอย่างเกี่ยวกับการแพร่"
+},
+
 {
 question:"ออสโมซิสเกี่ยวข้องกับอะไร?",
+image:"",
 answers:[
 "โปรตีน",
 "น้ำ",
@@ -129,10 +336,12 @@ answers:[
 "ออกซิเจน"
 ],
 correct:1,
-explain:"Osmosis คือการเคลื่อนที่ของน้ำ"
+explain:"Osmosis คือการเคลื่อนที่ของน้ำผ่านเยื่อเลือกผ่าน"
 }
+
 ];
 
+/* 🌸 SHUFFLE QUESTION */
 quiz.sort(()=>Math.random()-0.5);
 
 let i=0;
@@ -140,28 +349,33 @@ let score=0;
 let time=30;
 let timer;
 let locked=false;
-let hintUsed=false;
 
 function startGame(){
+
+  sfxClick.play();
+
   document.getElementById("menu").style.display="none";
   document.getElementById("game").style.display="block";
+
   load();
 }
 
 function startTimer(){
 
-  clearInterval(timer);
-
   time=30;
+
   document.getElementById("timer").innerText="⏰ Time: "+time;
 
   timer=setInterval(()=>{
 
     time--;
+
     document.getElementById("timer").innerText="⏰ Time: "+time;
 
     if(time<=0){
+
       clearInterval(timer);
+
       fail();
     }
 
@@ -171,21 +385,33 @@ function startTimer(){
 function load(){
 
   locked=false;
+
   document.getElementById("nextBtn").style.display="none";
+
   document.getElementById("explain").innerText="";
 
-  // reset hint
-  hintUsed=false;
-  document.getElementById("hintBtn").disabled=false;
-  document.getElementById("hintBtn").innerText="💡 Hint (50/50)";
-
   let q=quiz[i];
+
   document.getElementById("question").innerText=q.question;
+
+  /* 🌸 IMAGE */
+  const img=document.getElementById("questionImage");
+
+  if(q.image){
+
+    img.src=q.image;
+    img.style.display="block";
+
+  }else{
+
+    img.style.display="none";
+  }
 
   document.getElementById("answers").innerHTML="";
 
   startTimer();
 
+  /* 🌸 RANDOM ANSWERS */
   let shuffled=q.answers.map((a,index)=>({
     text:a,
     correct:index===q.correct
@@ -194,98 +420,135 @@ function load(){
   shuffled.sort(()=>Math.random()-0.5);
 
   shuffled.forEach(choice=>{
+
     let b=document.createElement("button");
+
     b.innerText=choice.text;
-    b.onclick=()=>check(choice.correct,q);
+
+    b.onclick=()=>check(choice.correct, q);
+
     document.getElementById("answers").appendChild(b);
+
   });
 }
 
-function check(isCorrect,q){
+function check(isCorrect, q){
 
   if(locked) return;
 
   locked=true;
+
   clearInterval(timer);
 
-  document.getElementById("hintBtn").disabled=true;
-
-  const correctText=q.answers[q.correct];
+  let correctText=q.answers[q.correct];
 
   if(isCorrect){
-    score++;
-    document.getElementById("score").innerText="Score: "+score;
-    document.getElementById("explain").innerText="✔ ถูกต้อง\n\n"+q.explain;
-  }else{
-    document.getElementById("explain").innerText=
-    "❌ ผิด\n✔ "+correctText+"\n\n"+q.explain;
-  }
 
-  document.querySelectorAll("#answers button").forEach(b=>{
-    b.disabled=true;
-  });
+    sfxCorrect.play();
+
+    score++;
+
+    document.getElementById("score").innerText="🌸 Score: "+score;
+
+    document.getElementById("explain").innerText=
+    "✔ ถูกต้อง ✨\n\n"+q.explain;
+
+  }else{
+
+    sfxWrong.play();
+
+    document.getElementById("score").innerText="🌸 Score: "+score;
+
+    document.getElementById("explain").innerText=
+    "❌ ผิด\n\n✔ คำตอบที่ถูก: "
+    + correctText +
+    "\n\n" +
+    q.explain;
+  }
 
   document.getElementById("nextBtn").style.display="block";
 }
 
 function fail(){
 
+  sfxWrong.play();
+
   locked=true;
-  document.getElementById("hintBtn").disabled=true;
 
   let q=quiz[i];
 
   document.getElementById("explain").innerText=
-  "⏰ หมดเวลา\n✔ "+q.answers[q.correct]+"\n\n"+q.explain;
-
-  document.querySelectorAll("#answers button").forEach(b=>{
-    b.disabled=true;
-  });
+  "⏰ หมดเวลา\n\n✔ คำตอบที่ถูก: "
+  + q.answers[q.correct] +
+  "\n\n" +
+  q.explain;
 
   document.getElementById("nextBtn").style.display="block";
 }
 
 function nextQuestion(){
 
+  sfxClick.play();
+
   i++;
 
   if(i<quiz.length){
+
     load();
+
   }else{
+
+    sfxFinish.play();
+
     document.getElementById("game").innerHTML=
-    `<h1>🎉 Finished!</h1><h2>Score: ${score}/${quiz.length}</h2>`;
+    `
+    <h1>🎉 Finished!</h1>
+    <h2>🌸 Score: ${score}/${quiz.length}</h2>
+    <p>good job scientist ✨</p>
+    `;
   }
 }
 
-/* 💡 HINT 50/50 (1 ครั้งทั้งเกม + ใช้ได้เฉพาะตอนยังไม่ตอบ) */
-function useHint(){
+/* 🌸 RANDOM FLOATING EMOJI */
+document.querySelectorAll(".cute").forEach(el => {
 
-  if(hintUsed) return;
-  if(locked) return;
+  el.style.left = Math.random()*100 + "vw";
 
-  hintUsed = true;
+  el.style.animationDuration =
+  (6 + Math.random()*6) + "s";
 
-  const buttons = Array.from(document.querySelectorAll("#answers button"));
-  const q = quiz[i];
+  el.style.opacity =
+  Math.random()*0.6 + 0.2;
 
-  const correctText = q.answers[q.correct];
+  el.style.fontSize =
+  (18 + Math.random()*20) + "px";
 
-  let wrongButtons = buttons.filter(b => b.innerText !== correctText);
-  let correctButton = buttons.find(b => b.innerText === correctText);
+});
 
-  wrongButtons.sort(()=>Math.random()-0.5);
+/* 🌟 RANDOM STAR */
+document.querySelectorAll(".star").forEach(s => {
 
-  let keep = [correctButton, wrongButtons[0]];
+  s.style.left =
+  Math.random()*100 + "vw";
 
-  buttons.forEach(b=>{
-    if(!keep.includes(b)){
-      b.style.display="none";
-    }
-  });
+  s.style.animationDuration =
+  (6 + Math.random()*8) + "s";
 
-  document.getElementById("hintBtn").disabled=true;
-  document.getElementById("hintBtn").innerText="💡 50/50 Used";
-}
+  s.style.opacity =
+  Math.random()*0.8;
+
+});
+
+/* 🧪 RANDOM PARTICLE */
+document.querySelectorAll(".particle").forEach(p => {
+
+  p.style.left =
+  Math.random()*100 + "vw";
+
+  p.style.animationDuration =
+  (10 + Math.random()*10) + "s";
+
+});
 
 </script>
 
