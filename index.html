@@ -570,31 +570,55 @@ document.querySelectorAll(".particle").forEach(p => {
 
 });
 
-  function showDiffusion(){
+function showDiffusion(){
 
   const box = document.getElementById("simulationBox");
 
   box.innerHTML = `
-  <h2>🌫 Diffusion Simulation</h2>
+  <h2>🌫 Simple Diffusion</h2>
 
   <p>
-  อนุภาคจะเคลื่อนจากบริเวณเข้มข้นมาก ➜ ไปน้อย
+  อนุภาคเคลื่อนจากบริเวณที่มีความเข้มข้นสูง ➜ ไปต่ำ
+  จนเกิด “สมดุล” ทั้งสองฝั่ง
   </p>
+
+  <div style="
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+    font-size:14px;
+    opacity:0.8;
+  ">
+    <span>เข้มข้นสูง</span>
+    <span>เข้มข้นต่ำ</span>
+  </div>
 
   <div id="diffusionArea" style="
     position:relative;
     width:100%;
-    height:150px;
+    height:180px;
     border-radius:18px;
     background:#08131f;
     overflow:hidden;
+    border:2px solid rgba(255,255,255,0.08);
   ">
+
+    <div style="
+      position:absolute;
+      left:50%;
+      top:0;
+      width:4px;
+      height:100%;
+      background:rgba(255,255,255,0.2);
+    "></div>
+
   </div>
   `;
 
   const area = document.getElementById("diffusionArea");
 
-  for(let i=0;i<25;i++){
+  for(let i=0;i<30;i++){
 
     let dot=document.createElement("div");
 
@@ -604,16 +628,46 @@ document.querySelectorAll(".particle").forEach(p => {
     dot.style.borderRadius="50%";
     dot.style.background="cyan";
 
-    dot.style.left=(Math.random()*80)+"px";
-    dot.style.top=(Math.random()*120)+"px";
+    let startX = Math.random()*100;
 
-    dot.style.transition="4s linear";
+    dot.style.left=startX+"px";
+    dot.style.top=(Math.random()*160)+"px";
+
+    dot.style.transition="6s linear";
 
     area.appendChild(dot);
 
     setTimeout(()=>{
 
-      dot.style.left=(150 + Math.random()*140)+"px";
+      let finalX = 40 + Math.random()*220;
+
+      dot.style.left=finalX+"px";
+
+    },100);
+  }
+
+  for(let i=0;i<8;i++){
+
+    let dot=document.createElement("div");
+
+    dot.style.position="absolute";
+    dot.style.width="12px";
+    dot.style.height="12px";
+    dot.style.borderRadius="50%";
+    dot.style.background="#7ee7ff";
+
+    dot.style.left=(220 + Math.random()*70)+"px";
+    dot.style.top=(Math.random()*160)+"px";
+
+    dot.style.transition="6s linear";
+
+    area.appendChild(dot);
+
+    setTimeout(()=>{
+
+      let finalX = 120 + Math.random()*140;
+
+      dot.style.left=finalX+"px";
 
     },100);
   }
@@ -627,42 +681,59 @@ function showOsmosis(){
   <h2>💧 Osmosis Simulation</h2>
 
   <p>
-  น้ำเคลื่อนผ่านเยื่อเลือกผ่าน ไปยังฝั่งที่มีสารเข้มข้นมากกว่า
+  น้ำจะเคลื่อนผ่าน “เยื่อเลือกผ่าน”
+  ไปยังฝั่งที่มี “สารละลายเข้มข้นกว่า”
   </p>
 
   <div style="
     display:flex;
     justify-content:space-between;
-    align-items:center;
+    align-items:flex-end;
     gap:10px;
     margin-top:20px;
   ">
 
-    <div id="leftWater" style="
-      width:45%;
-      height:140px;
-      background:#3bbcff;
-      border-radius:20px;
-      transition:2s;
-    ">
+    <div style="width:45%;">
+
+      <p style="margin-bottom:8px;">
+      สารเข้มข้นน้อย
+      </p>
+
+      <div id="leftWater" style="
+        width:100%;
+        height:150px;
+        background:#3bbcff;
+        border-radius:20px;
+        transition:2s;
+      ">
+      </div>
+
     </div>
 
     <div style="
       width:8px;
-      height:150px;
+      height:180px;
       background:white;
       opacity:0.5;
       border-radius:10px;
     ">
     </div>
 
-    <div id="rightWater" style="
-      width:45%;
-      height:80px;
-      background:#0a6cff;
-      border-radius:20px;
-      transition:2s;
-    ">
+    <div style="width:45%;">
+
+      <p style="margin-bottom:8px;">
+      สารเข้มข้นมาก
+      </p>
+
+      <div id="rightWater" style="
+        width:100%;
+        height:90px;
+        background:#0a6cff;
+        border-radius:20px;
+        transition:2s;
+      ">
+      </div>
+
     </div>
 
   </div>
@@ -670,9 +741,9 @@ function showOsmosis(){
 
   setTimeout(()=>{
 
-    document.getElementById("leftWater").style.height="90px";
+    document.getElementById("leftWater").style.height="100px";
 
-    document.getElementById("rightWater").style.height="130px";
+    document.getElementById("rightWater").style.height="140px";
 
   },500);
 }
