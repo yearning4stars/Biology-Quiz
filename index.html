@@ -7,7 +7,9 @@
 
 <!-- 🌸 FONT -->
 <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
-
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+  
 <style>
 
 html, body{
@@ -109,6 +111,7 @@ body{
 }
 
 /* 🎮 GAME */
+<div id="lbList"></div>
 .box{
   display:none;
 
@@ -241,7 +244,7 @@ button:hover{
 <!-- MENU -->
 <div id="menu">
   <h1>🧪 Biology Quiz</h1>
-  <p>cute science time ✨</p>
+  <p>made by WK studentds!✨</p>
 
   <input id="playerName" placeholder="Enter name"
   style="padding:10px;border-radius:10px;margin:10px;">
@@ -251,6 +254,7 @@ button:hover{
 
 <!-- GAME -->
 <div class="box" id="game">
+<div id="lbList" style="margin-top:15px;"></div>
 
 <h2 id="question">Loading...</h2>
 
@@ -268,7 +272,20 @@ button:hover{
 </div>
 
 <script>
+  
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "yearning4stars.firebaseapp.com",
+  databaseURL: "https://yearning4stars-default-rtdb.asia-southeast1.firebasedatabase.app/",
+  projectId: "yearning4stars",
+  storageBucket: "yearning4stars.appspot.com",
+  messagingSenderId: "YOUR_ID",
+  appId: "YOUR_APP_ID"
+};
 
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+showLeaderboardRealtime();
 const sfxCorrect = new Audio("correct.wav");
 const sfxWrong = new Audio("wrong.wav");
 const sfxClick = new Audio("click.wav");
@@ -278,29 +295,38 @@ function saveScore(){
 
   let name = document.getElementById("playerName").value || "Player";
 
-  let data = JSON.parse(localStorage.getItem("bio_leaderboard") || "[]");
-
-  data.push({ name:name, score:score });
-
-  data.sort((a,b)=>b.score-a.score);
-  data = data.slice(0,5);
-
-  localStorage.setItem("bio_leaderboard", JSON.stringify(data));
-}
-
-function showLeaderboard(){
-
-  let data = JSON.parse(localStorage.getItem("bio_leaderboard") || "[]");
-
-  let html = "";
-
-  data.forEach((d,i)=>{
-    html += `<p>${i+1}. ${d.name} - ${d.score}</p>`;
+  db.ref("leaderboard").push({
+    name: name,
+    score: score
   });
-
-  document.getElementById("lbList").innerHTML = html;
 }
 
+function showLeaderboardRealtime(){
+
+  db.ref("leaderboard")
+    .orderByChild("score")
+    .limitToLast(5)
+    .on("value", (snapshot)=>{
+
+      let data = [];
+
+      snapshot.forEach(child=>{
+        data.push(child.val());
+      });
+
+      data.reverse();
+
+      let html = "";
+
+      data.forEach((d,i)=>{
+        html += `<p>${i+1}. ${d.name} - ${d.score}</p>`;
+      });
+
+      const el = document.getElementById("lbList");
+      if(el) el.innerHTML = html;
+    });
+}
+  
 /* 🌸 RANDOM QUESTION ORDER */
 const quiz = [
 
@@ -372,6 +398,8 @@ explain:"Osmosis คือการเคลื่อนที่ของน้
 ];
 
 /* 🌸 SHUFFLE QUESTION */
+const quiz = [ ... ];
+
 quiz.sort(()=>Math.random()-0.5);
 
 let i=0;
@@ -536,7 +564,7 @@ function nextQuestion(){
     `
     <h1>🎉 Finished!</h1>
     <h2>🌸 Score: ${score}/${quiz.length}</h2>
-    <p>good job scientist ✨</p>
+    <p>Thank you for playing!!✨</p>
 
     <hr style="margin:20px 0;opacity:0.3">
 
@@ -546,7 +574,7 @@ function nextQuestion(){
     <button onclick="location.reload()">Play Again</button>
     `;
 
-    showLeaderboard();
+    showLeaderboardRealtime();
   }
 }
 
