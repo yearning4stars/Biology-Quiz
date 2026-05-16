@@ -501,11 +501,31 @@ function nextQuestion(){
     sfxFinish.play();
 
     document.getElementById("game").innerHTML=
-    `
-    <h1>🎉 Finished!</h1>
-    <h2>🌸 Score: ${score}/${quiz.length}</h2>
-    <p>Thank you for playing!!✨</p>
-    `;
+`
+<h1>🎉 Finished!</h1>
+<h2>🌸 Score: ${score}/${quiz.length}</h2>
+<p>Thank you for playing!!✨</p>
+
+<button onclick="showDiffusion()">
+🌫 ดูการแพร่ (Diffusion)
+</button>
+
+<button onclick="showOsmosis()">
+💧 ดูออสโมซิส (Osmosis)
+</button>
+
+<div id="simulationBox" style="
+margin-top:20px;
+padding:20px;
+border-radius:20px;
+background:rgba(255,255,255,0.08);
+min-height:220px;
+position:relative;
+overflow:hidden;
+">
+เลือกแบบจำลองด้านบน ✨
+</div>
+`;
   }
 }
 
@@ -550,6 +570,113 @@ document.querySelectorAll(".particle").forEach(p => {
 
 });
 
+  function showDiffusion(){
+
+  const box = document.getElementById("simulationBox");
+
+  box.innerHTML = `
+  <h2>🌫 Diffusion Simulation</h2>
+
+  <p>
+  อนุภาคจะเคลื่อนจากบริเวณเข้มข้นมาก ➜ ไปน้อย
+  </p>
+
+  <div id="diffusionArea" style="
+    position:relative;
+    width:100%;
+    height:150px;
+    border-radius:18px;
+    background:#08131f;
+    overflow:hidden;
+  ">
+  </div>
+  `;
+
+  const area = document.getElementById("diffusionArea");
+
+  for(let i=0;i<25;i++){
+
+    let dot=document.createElement("div");
+
+    dot.style.position="absolute";
+    dot.style.width="12px";
+    dot.style.height="12px";
+    dot.style.borderRadius="50%";
+    dot.style.background="cyan";
+
+    dot.style.left=(Math.random()*80)+"px";
+    dot.style.top=(Math.random()*120)+"px";
+
+    dot.style.transition="4s linear";
+
+    area.appendChild(dot);
+
+    setTimeout(()=>{
+
+      dot.style.left=(150 + Math.random()*140)+"px";
+
+    },100);
+  }
+}
+
+function showOsmosis(){
+
+  const box = document.getElementById("simulationBox");
+
+  box.innerHTML = `
+  <h2>💧 Osmosis Simulation</h2>
+
+  <p>
+  น้ำเคลื่อนผ่านเยื่อเลือกผ่าน ไปยังฝั่งที่มีสารเข้มข้นมากกว่า
+  </p>
+
+  <div style="
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-top:20px;
+  ">
+
+    <div id="leftWater" style="
+      width:45%;
+      height:140px;
+      background:#3bbcff;
+      border-radius:20px;
+      transition:2s;
+    ">
+    </div>
+
+    <div style="
+      width:8px;
+      height:150px;
+      background:white;
+      opacity:0.5;
+      border-radius:10px;
+    ">
+    </div>
+
+    <div id="rightWater" style="
+      width:45%;
+      height:80px;
+      background:#0a6cff;
+      border-radius:20px;
+      transition:2s;
+    ">
+    </div>
+
+  </div>
+  `;
+
+  setTimeout(()=>{
+
+    document.getElementById("leftWater").style.height="90px";
+
+    document.getElementById("rightWater").style.height="130px";
+
+  },500);
+}
+  
 </script>
 
 </body>
