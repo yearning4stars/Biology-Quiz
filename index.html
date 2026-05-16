@@ -204,9 +204,11 @@ function load(){
 function check(isCorrect,q){
 
   if(locked) return;
-  locked=true;
 
+  locked=true;
   clearInterval(timer);
+
+  document.getElementById("hintBtn").disabled=true;
 
   const correctText=q.answers[q.correct];
 
@@ -229,6 +231,7 @@ function check(isCorrect,q){
 function fail(){
 
   locked=true;
+  document.getElementById("hintBtn").disabled=true;
 
   let q=quiz[i];
 
@@ -254,10 +257,12 @@ function nextQuestion(){
   }
 }
 
-/* 💡 HINT 50/50 */
+/* 💡 HINT 50/50 (1 ครั้งทั้งเกม + ใช้ได้เฉพาะตอนยังไม่ตอบ) */
 function useHint(){
 
   if(hintUsed) return;
+  if(locked) return;
+
   hintUsed = true;
 
   const buttons = Array.from(document.querySelectorAll("#answers button"));
@@ -270,10 +275,7 @@ function useHint(){
 
   wrongButtons.sort(()=>Math.random()-0.5);
 
-  let keep = [
-    correctButton,
-    wrongButtons[0]
-  ];
+  let keep = [correctButton, wrongButtons[0]];
 
   buttons.forEach(b=>{
     if(!keep.includes(b)){
