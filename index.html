@@ -14,14 +14,15 @@ html, body{
   margin:0;
   padding:0;
   overflow-x:hidden;
+  overflow-y:auto;
   font-family:'Comic Neue', Arial;
 }
 
-/* 🌌 BACKGROUND */
 body{
   background: radial-gradient(circle at top,#0b1b2b,#07111c,#050b12);
   color:white;
   text-align:center;
+  position:relative;
 }
 
 /* 🌟 STAR */
@@ -74,9 +75,10 @@ body{
   flex-direction:column;
   justify-content:center;
   align-items:center;
+  z-index:5;
 }
 
-/* GAME */
+/* GAME BOX */
 .box{
   display:none;
   width:92%;
@@ -84,7 +86,10 @@ body{
   margin:40px auto;
   padding:20px;
   background:rgba(27,42,65,0.85);
+  backdrop-filter:blur(6px);
   border-radius:20px;
+  position:relative;
+  z-index:2;
 }
 
 /* BUTTON */
@@ -92,14 +97,38 @@ button{
   width:90%;
   padding:14px;
   margin:8px;
+  font-size:16px;
+  font-family:'Comic Neue', Arial;
   border:none;
   border-radius:16px;
+  cursor:pointer;
   background:linear-gradient(135deg,#00aaff,#66ffcc);
   color:white;
+  box-shadow:0 4px 12px rgba(0,0,0,0.25);
 }
 
-/* LEADERBOARD */
-#leaderboard{
+button:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 20px cyan;
+}
+
+/* TEXT */
+#question{
+  font-size:24px;
+  margin-bottom:12px;
+}
+
+#score{
+  font-size:18px;
+}
+
+#explain{
+  margin-top:10px;
+  color:#bcdcff;
+  white-space:pre-line;
+}
+
+#nextBtn{
   display:none;
 }
 
@@ -110,30 +139,63 @@ button{
 
 <!-- BACKGROUND -->
 <div class="star"></div><div class="star"></div><div class="star"></div>
+<div class="star"></div><div class="star"></div>
 <div class="particle"></div><div class="particle"></div>
-<div class="cute">🧬</div><div class="cute">🧪</div>
+<div class="cute">🧬</div><div class="cute">🧪</div><div class="cute">✨</div>
 
 <!-- MENU -->
 <div id="menu">
   <h1>🧪 Biology Quiz</h1>
-  <input id="playerName" placeholder="Enter name">
+  <input id="playerName" placeholder="Enter name"
+  style="padding:10px;border-radius:10px;margin:10px;">
   <button onclick="startGame()">Start</button>
 </div>
 
 <!-- GAME -->
 <div class="box" id="game">
 
-<h2 id="question"></h2>
+<h2 id="question">Loading...</h2>
 <div id="answers"></div>
+
 <p id="score">Score: 0</p>
 <p id="explain"></p>
-<button id="nextBtn" onclick="nextQuestion()">Next</button>
+
+<button id="nextBtn" onclick="nextQuestion()">Next ➜</button>
 
 </div>
 
 <script>
 
+/* =========================
+   LEADERBOARD SYSTEM
+========================= */
+
+function saveScore(){
+
+  let name = document.getElementById("playerName").value || "Player";
+
+  let data = JSON.parse(localStorage.getItem("bio_leaderboard") || "[]");
+
+  data.push({ name:name, score:score });
+
+  data.sort((a,b)=>b.score-a.score);
+
+  data = data.slice(0,5);
+
+  localStorage.setItem("bio_leaderboard", JSON.stringify(data));
+}
+
+function getLeaderboard(){
+
+  return JSON.parse(localStorage.getItem("bio_leaderboard") || "[]");
+}
+
+/* =========================
+   QUIZ DATA (FULL)
+========================= */
+
 let quiz = [
+
 {
 question:"การแพร่ คืออะไร?",
 answers:[
@@ -143,8 +205,46 @@ answers:[
 "การสร้างโปรตีน"
 ],
 correct:0,
-explain:"การแพร่คือการเคลื่อนที่ของสารจากเข้มข้นสูงไปต่ำ"
+explain:"การแพร่ คือการเคลื่อนที่ของสารจากเข้มข้นสูงไปต่ำ โดยไม่ใช้พลังงาน"
 },
+
+{
+question:"ข้อใดไม่ใช่การลำเลียงผ่านเยื่อหุ้มเซลล์โดยตรง?",
+answers:[
+"Diffusion",
+"Active transport",
+"Passive transport",
+"Digestion"
+],
+correct:3,
+explain:"Digestion ไม่ใช่การลำเลียงผ่านเยื่อหุ้มเซลล์โดยตรง"
+},
+
+{
+question:"ข้อใดเป็นตัวอย่างของการแพร่?",
+answers:[
+"น้ำเข้าสู่รากพืช",
+"ออกซิเจนเข้าสู่เซลล์",
+"เม็ดเลือดขาวกินเชื้อโรค",
+"ไก่หมกหม้อขับของเสียออก"
+],
+correct:1,
+explain:"ออกซิเจนเข้าสู่เซลล์เป็นการแพร่แบบธรรมดา"
+},
+
+{
+question:"ภาพนี้เกี่ยวข้องกับอะไร?",
+image:"trustmethisisAi2.png",
+answers:[
+"การสังเคราะห์แสง",
+"ออสโมซิส",
+"การแพร่",
+"ไมโทซิส"
+],
+correct:2,
+explain:"ภาพนี้แสดงตัวอย่างเกี่ยวกับการแพร่"
+},
+
 {
 question:"ออสโมซิสเกี่ยวข้องกับอะไร?",
 answers:[
@@ -154,108 +254,144 @@ answers:[
 "ออกซิเจน"
 ],
 correct:1,
-explain:"Osmosis คือการเคลื่อนที่ของน้ำ"
+explain:"Osmosis คือการเคลื่อนที่ของน้ำผ่านเยื่อเลือกผ่าน"
 }
+
 ];
 
 quiz.sort(()=>Math.random()-0.5);
+
+/* =========================
+   GAME STATE
+========================= */
 
 let i=0;
 let score=0;
 let locked=false;
 
+/* =========================
+   START GAME
+========================= */
+
 function startGame(){
-document.getElementById("menu").style.display="none";
-document.getElementById("game").style.display="block";
-load();
+
+  document.getElementById("menu").style.display="none";
+  document.getElementById("game").style.display="block";
+
+  load();
 }
+
+/* =========================
+   LOAD QUESTION
+========================= */
 
 function load(){
-locked=false;
-document.getElementById("explain").innerText="";
-document.getElementById("nextBtn").style.display="none";
 
-let q = quiz[i];
-document.getElementById("question").innerText = q.question;
+  locked=false;
 
-document.getElementById("answers").innerHTML="";
+  document.getElementById("nextBtn").style.display="none";
+  document.getElementById("explain").innerText="";
 
-q.answers.forEach((a,idx)=>{
-let b=document.createElement("button");
-b.innerText=a;
-b.onclick=()=>check(idx===q.correct,q);
-document.getElementById("answers").appendChild(b);
-});
+  let q = quiz[i];
+
+  document.getElementById("question").innerText = q.question;
+
+  let box = document.getElementById("answers");
+  box.innerHTML="";
+
+  q.answers.forEach((a,idx)=>{
+
+    let b=document.createElement("button");
+
+    b.innerText=a;
+
+    b.onclick=()=>check(idx===q.correct,q);
+
+    box.appendChild(b);
+
+  });
+
 }
+
+/* =========================
+   CHECK ANSWER
+========================= */
 
 function check(correct,q){
-if(locked) return;
-locked=true;
 
-if(correct){
-score++;
-document.getElementById("score").innerText="Score: "+score;
-document.getElementById("explain").innerText="✔ "+q.explain;
-}else{
-document.getElementById("explain").innerText="❌ "+q.explain;
+  if(locked) return;
+  locked=true;
+
+  if(correct){
+    score++;
+    document.getElementById("score").innerText="Score: "+score;
+    document.getElementById("explain").innerText="✔ "+q.explain;
+  }else{
+    document.getElementById("explain").innerText="❌ "+q.explain;
+  }
+
+  document.getElementById("nextBtn").style.display="block";
 }
 
-document.getElementById("nextBtn").style.display="block";
-}
+/* =========================
+   NEXT QUESTION
+========================= */
 
 function nextQuestion(){
-i++;
-if(i<quiz.length){
-load();
-}else{
-finish();
-}
+
+  i++;
+
+  if(i<quiz.length){
+    load();
+  }else{
+    finish();
+  }
 }
 
-function saveScore(){
-let name=document.getElementById("playerName").value||"Player";
-let data=JSON.parse(localStorage.getItem("bio")||"[]");
-data.push({name,score});
-data.sort((a,b)=>b.score-a.score);
-data=data.slice(0,5);
-localStorage.setItem("bio",JSON.stringify(data));
-}
-
-function showLB(){
-let data=JSON.parse(localStorage.getItem("bio")||"[]");
-let html="";
-data.forEach((d,i)=>{
-html+=`<p>${i+1}. ${d.name} - ${d.score}</p>`;
-});
-document.getElementById("lb").innerHTML=html;
-}
+/* =========================
+   FINISH + LEADERBOARD
+========================= */
 
 function finish(){
-saveScore();
 
-document.getElementById("game").innerHTML=`
-<h1>Finished</h1>
-<h2>${score}/${quiz.length}</h2>
-<h3>Leaderboard</h3>
-<div id="lb"></div>
-<button onclick="location.reload()">Restart</button>
-`;
+  saveScore();
 
-showLB();
+  let lb = getLeaderboard();
+
+  let html = "";
+
+  lb.forEach((d,index)=>{
+    html += `<p>${index+1}. ${d.name} - ${d.score}</p>`;
+  });
+
+  document.getElementById("game").innerHTML = `
+    <h1>🎉 Finished!</h1>
+    <h2>Score: ${score}/${quiz.length}</h2>
+
+    <h3>🏆 Leaderboard</h3>
+    ${html}
+
+    <button onclick="location.reload()">Play Again</button>
+  `;
 }
 
-/* background random */
-document.querySelectorAll(".cute").forEach(e=>{
-e.style.left=Math.random()*100+"vw";
-e.style.animationDuration=(6+Math.random()*6)+"s";
+/* =========================
+   BACKGROUND EFFECTS
+========================= */
+
+document.querySelectorAll(".star").forEach(s=>{
+  s.style.left=Math.random()*100+"vw";
+  s.style.animationDuration=(6+Math.random()*6)+"s";
 });
 
-document.querySelectorAll(".star").forEach(e=>{
-e.style.left=Math.random()*100+"vw";
+document.querySelectorAll(".particle").forEach(p=>{
+  p.style.left=Math.random()*100+"vw";
+  p.style.animationDuration=(8+Math.random()*6)+"s";
 });
 
-document.querySelectorAll(".particle").forEach(e=>{
-e.style.left=Math.random()*100+"vw";
+document.querySelectorAll(".cute").forEach(c=>{
+  c.style.left=Math.random()*100+"vw";
+  c.style.animationDuration=(6+Math.random()*6)+"s";
 });
 
 </script>
