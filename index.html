@@ -242,12 +242,19 @@ button:hover{
 <div id="menu">
   <h1>🧪 Biology Quiz</h1>
   <p>made by Wk students! ✨</p>
+  <input id="playerName" placeholder="Enter name"
+style="padding:10px;border-radius:10px;margin:10px;">
 
   <button onclick="startGame()">▶ Start</button>
 </div>
 
 <!-- GAME -->
 <div class="box" id="game">
+<div id="leaderboard" style="display:none;">
+<h2>🏆 Leaderboard</h2>
+<div id="lbList"></div>
+<button onclick="location.reload()">Play Again</button>
+</div>
 
 <h2 id="question">Loading...</h2>
 
@@ -265,6 +272,36 @@ button:hover{
 </div>
 
 <script>
+
+function saveScore(){
+
+  let name = document.getElementById("playerName").value || "Player";
+
+  let data = JSON.parse(localStorage.getItem("bio_leaderboard") || "[]");
+
+  data.push({ name, score });
+
+  data.sort((a,b)=>b.score-a.score);
+  data = data.slice(0,5);
+
+  localStorage.setItem("bio_leaderboard", JSON.stringify(data));
+}
+
+function showLeaderboard(){
+
+  document.getElementById("game").style.display="none";
+  document.getElementById("leaderboard").style.display="block";
+
+  let data = JSON.parse(localStorage.getItem("bio_leaderboard") || "[]");
+
+  let html = "";
+
+  data.forEach((d,i)=>{
+    html += `<p>${i+1}. ${d.name} - ${d.score}</p>`;
+  });
+
+  document.getElementById("lbList").innerHTML = html;
+}
 
 const sfxCorrect = new Audio("correct.wav");
 const sfxWrong = new Audio("wrong.wav");
@@ -496,17 +533,27 @@ function nextQuestion(){
 
     load();
 
-  }else{
+}else{
 
-    sfxFinish.play();
+  sfxFinish.play();
 
-    document.getElementById("game").innerHTML=
-    `
+  saveScore(); // 💡 บันทึกคะแนนก่อน
+
+  document.getElementById("game").innerHTML =
+  `
     <h1>🎉 Finished!</h1>
     <h2>🌸 Score: ${score}/${quiz.length}</h2>
     <p>Thank you for playing!!</p>
-    `;
-  }
+
+    <hr style="margin:20px 0;opacity:0.3">
+
+    <h2>🏆 Leaderboard</h2>
+    <div id="lbList"></div>
+
+    <button onclick="location.reload()">Play Again</button>
+  `;
+
+  showLeaderboard(); // 💡 ใส่ข้อมูล leaderboard ลง lbList
 }
 
 /* 🌸 RANDOM FLOATING EMOJI */
