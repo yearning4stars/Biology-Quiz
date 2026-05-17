@@ -208,6 +208,21 @@ button:hover{
   font-weight:bold;
 }
 
+/* ⏰ TIMER WARNING */
+.timerDanger{
+  color:#ff4d4d !important;
+  animation:shake 0.35s infinite;
+  text-shadow:0 0 10px red;
+}
+
+@keyframes shake{
+  0%{ transform:translateX(0); }
+  25%{ transform:translateX(-2px); }
+  50%{ transform:translateX(2px); }
+  75%{ transform:translateX(-2px); }
+  100%{ transform:translateX(0); }
+}
+
 </style>
 </head>
 
@@ -414,15 +429,26 @@ function startGame(){
 
 function startTimer(){
 
-  time=30;
+  time=15;
 
-  document.getElementById("timer").innerText="⏰ Time: "+time;
+  const timerEl = document.getElementById("timer");
+
+  timerEl.classList.remove("timerDanger");
+
+  timerEl.innerText="⏰ Time: "+time;
 
   timer=setInterval(()=>{
 
     time--;
 
-    document.getElementById("timer").innerText="⏰ Time: "+time;
+    timerEl.innerText="⏰ Time: "+time;
+
+    /* 🔴 เหลือ 5 วิ */
+    if(time<=5){
+
+      timerEl.classList.add("timerDanger");
+
+    }
 
     if(time<=0){
 
